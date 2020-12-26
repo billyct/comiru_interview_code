@@ -1,0 +1,11 @@
+{
+  "esversion": 5,
+  "undef": true,
+  "unused": true,
+  "asi": true,
+  "browser": true,
+  "node": true,
+  "globals": {
+    "EventTarget": true
+  }
+}
