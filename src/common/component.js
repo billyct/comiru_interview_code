@@ -6,14 +6,13 @@ var ComponentFunc = function () {
   // global event listener
   var listener = new EventTarget()
 
-  function Component() {}
+  function Component() {
+  }
 
   mixin(Component, {
 
     // for listen events
     listener: listener,
-
-    callbackMap: {},
 
     /**
      * listen event for Component
@@ -22,7 +21,6 @@ var ComponentFunc = function () {
      * @param {ComponentEventCallback} callback
      */
     on: function (eventType, callback) {
-      this.callbackMap[eventType] = callback
       this.listener.addEventListener(eventType, callback)
     },
 
@@ -51,18 +49,6 @@ var ComponentFunc = function () {
       this.listener.dispatchEvent(event)
     },
 
-    /**
-     * remove event for Component
-     *
-     * @param {string} eventType
-     */
-    off: function (eventType) {
-      var cb = this.callbackMap[eventType]
-      if (cb) {
-        this.listener.removeEventListener(eventType, cb)
-        delete this.callbackMap[eventType]
-      }
-    }
   })
 
   return Component

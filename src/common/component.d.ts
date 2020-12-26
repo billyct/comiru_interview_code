@@ -5,8 +5,6 @@ interface Component {
     on(eventType: string, callback: ComponentEventCallback): void;
 
     trigger(eventType: string, value: any): void;
-
-    off(eventType: string): void;
 }
 
 export interface ComponentEvent {

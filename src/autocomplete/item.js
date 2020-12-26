@@ -4,55 +4,67 @@ var events = require('./events')
 var classes = require('./classes')
 
 var mixin = utils.mixin
+var createElement = utils.createElement
+var queryWithClassnameAndText = utils.queryWithClassnameAndText
 
-function Item(text) {
-  this.text = text
-  this._init()
-  this.on(events.onUnselected, this.remove.bind(this))
+function ItemFunc() {
+
+  function Item() {
+    var root = createElement('span', classes.itemContainer)
+    root.addEventListener('click', this.handleClick.bind(this))
+
+    this.root = root
+
+    this.on(events.onUnselected, this.handleUnselected.bind(this))
+    this.on(events.onSelected, this.handleSelected.bind(this))
+  }
+
+  mixin(Item, Component, {
+    /**
+     *
+     * @param {ComponentEvent} e
+     */
+    handleSelected: function (e) {
+      var item = createElement('span', classes.item)
+
+      var content = createElement('span', classes.itemContent)
+      content.textContent = e.detail.value
+
+      var remove = createElement('span', classes.itemRemove)
+      remove.textContent = '×'
+
+      item.appendChild(content)
+      item.appendChild(remove)
+
+      this.root.appendChild(item)
+    },
+
+    /**
+     *
+     * @param {MouseEvent} e
+     */
+    handleClick: function (e) {
+      var target = e.target
+      // if it's the item remove button
+      if (target.classList.contains(classes.itemRemove)) {
+        this.trigger(events.onUnselected, target.textContent)
+        target.parentNode.remove()
+      }
+    },
+
+    /**
+     * @param {ComponentEvent} e
+     */
+    handleUnselected: function (e) {
+      var node = queryWithClassnameAndText(this.root, classes.itemContent, e.detail.value)
+
+      if (node) {
+        node.parentNode.remove()
+      }
+    }
+  })
+
+  return Item
 }
 
-mixin(Item, Component, {
-  node: null,
-  /**
-   * init the component
-   */
-  _init: function () {
-    var itemNode = document.createElement('span')
-    itemNode.className = classes.item
-
-    var contentNode = document.createElement('span')
-    contentNode.className = classes.itemContent
-    contentNode.textContent = this.text
-
-    var removeNode = document.createElement('span')
-    removeNode.className = classes.itemRemove
-    removeNode.textContent = '×'
-
-    itemNode.appendChild(contentNode)
-    itemNode.appendChild(removeNode)
-
-    removeNode.addEventListener('click', this.triggerUnselected.bind(this))
-
-    this.node = itemNode
-  },
-
-  /**
-   * trigger unselected
-   */
-  triggerUnselected: function () {
-    this.trigger(events.onUnselected, this.text)
-  },
-
-  /**
-   * unselected
-   */
-  remove: function (e) {
-    if (e.detail.value === this.text) {
-      this.node.remove()
-      this.off(events.onUnselected)
-      this.node = null
-    }
-  },
-})
-
-module.exports = Item
+module.exports = ItemFunc()

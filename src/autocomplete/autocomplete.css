@@ -9,6 +9,10 @@
   width: 300px;
 }
 
+.ac__item__container {
+
+}
+
 .ac__item {
   background-color: lightgoldenrodyellow;
   border: 1px solid gray;
@@ -31,7 +35,7 @@
   font-weight: bold;
 }
 
-.ac__input__wrapper {
+.ac__input__container {
   width: 5px;
   display: inline-block;
   margin: 2px;
