@@ -1,11 +1,12 @@
 var utils = require('../common/utils')
+var html = require('../common/html')
 var Component = require('./component')
 var events = require('./events')
 var classes = require('./classes')
 
 var mixin = utils.mixin
-var createElement = utils.createElement
-var queryWithClassnameAndText = utils.queryWithClassnameAndText
+var createElement = html.createElement
+var querySelector = html.querySelector
 
 function ItemFunc() {
 
@@ -17,6 +18,7 @@ function ItemFunc() {
 
     this.on(events.onUnselected, this.handleUnselected.bind(this))
     this.on(events.onSelected, this.handleSelected.bind(this))
+    this.on(events.onPressBackspace, this.handlePressBackspace.bind(this))
   }
 
   mixin(Item, Component, {
@@ -31,7 +33,6 @@ function ItemFunc() {
       content.textContent = e.detail.value
 
       var remove = createElement('span', classes.itemRemove)
-      remove.textContent = '×'
 
       item.appendChild(content)
       item.appendChild(remove)
@@ -56,10 +57,23 @@ function ItemFunc() {
      * @param {ComponentEvent} e
      */
     handleUnselected: function (e) {
-      var node = queryWithClassnameAndText(this.root, classes.itemContent, e.detail.value)
+      var node = querySelector(this.root, {
+        className: classes.itemContent,
+        textContent: e.detail.value,
+      })
 
       if (node) {
         node.parentNode.remove()
+      }
+    },
+
+    /**
+     * handle backspace pressed, delete the last item
+     */
+    handlePressBackspace: function () {
+      var node = this.root.lastElementChild
+      if (node) {
+        this.trigger(events.onUnselected, node.firstElementChild.textContent)
       }
     }
   })

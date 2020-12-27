@@ -5,6 +5,8 @@ module.exports = {
   onUnselected: 'ac.onUnselected',
   onHoverPrev: 'ac.onHoverPrev',
   onHoverNext: 'ac.onHoverNext',
+  onPressEnter: 'ac.onPressEnter',
+  onPressBackspace: 'ac.onPressBackspace',
   onFocus: 'ac.onFocus',
   onRefreshMenu: 'ac.onRefreshMenu',
   onHideMenu: 'ac.onHideMenu',

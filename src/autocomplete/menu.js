@@ -1,11 +1,12 @@
 var utils = require('../common/utils')
+var html = require('../common/html')
 var Component = require('./component')
 var events = require('./events')
 var classes = require('./classes')
 
 var mixin = utils.mixin
-var createElement = utils.createElement
-var queryWithClassnameAndText = utils.queryWithClassnameAndText
+var createElement = html.createElement
+var querySelector = html.querySelector
 
 function MenuFunc() {
 
@@ -20,18 +21,136 @@ function MenuFunc() {
     this.on(events.onHideMenu, this.handleHide.bind(this))
     this.on(events.onShowMenu, this.handleShow.bind(this))
     this.on(events.onUnselected, this.handleUnselected.bind(this))
+    this.on(events.onSelected, this.handleSelected.bind(this))
+    this.on(events.onHoverNext, this.handleHoverNext.bind(this))
+    this.on(events.onHoverPrev, this.handleHoverPrev.bind(this))
+    this.on(events.onPressEnter, this.handlePressEnter.bind(this))
   }
 
   mixin(Menu, Component, {
+
     /**
+     * ensure the node's position and make it visible with the scroll
+     *
+     * @param node
+     * @private
+     */
+    _ensureVisible: function (node) {
+      var nodeTop = node.offsetTop
+      var nodeBottom = node.offsetTop + node.offsetHeight
+
+      var rootScrollTop = this.root.scrollTop
+      var rootHeight = this.root.clientHeight
+
+      if (nodeTop < rootScrollTop) {
+        this.root.scrollTop = nodeTop
+      } else if (nodeBottom > rootScrollTop + rootHeight) {
+        this.root.scrollTop = nodeBottom - rootHeight
+      }
+    },
+
+    /**
+     * remove the menuItemHover classname
+     *
+     * @private
+     */
+    _removeMenuItemHoverClassname: function () {
+      var node = querySelector(this.root, {
+        className: classes.menuItemHover,
+      })
+
+      if (node) {
+        node.classList.remove(classes.menuItemHover)
+      }
+    },
+
+    /**
+     * handle press enter
+     */
+    handlePressEnter: function () {
+      var node = querySelector(this.root, {
+        className: classes.menuItemHover,
+      })
+
+      if (node) {
+        // trigger handleClick function
+        node.click()
+      }
+    },
+
+    /**
+     * handle onHoverPrev
+     */
+    handleHoverPrev: function () {
+
+      var node = querySelector(this.root, {
+        className: classes.menuItemHover,
+      })
+
+      if (node && this.root.firstElementChild !== node) {
+        node.classList.remove(classes.menuItemHover)
+
+        var nodePrev = node.previousElementSibling
+        nodePrev.classList.add(classes.menuItemHover)
+        this._ensureVisible(nodePrev)
+      }
+    },
+
+    /**
+     * handle onHoverNext
+     */
+    handleHoverNext: function () {
+      var nodeNext
+
+      var node = querySelector(this.root, {
+        className: classes.menuItemHover,
+      })
+
+      if (node && this.root.lastElementChild !== node) {
+        node.classList.remove(classes.menuItemHover)
+        nodeNext = node.nextElementSibling
+      } else {
+        nodeNext = querySelector(this.root, {
+          className: classes.menuItem,
+          index: 1,
+        })
+      }
+
+      if (nodeNext) {
+        nodeNext.classList.add(classes.menuItemHover)
+        this._ensureVisible(nodeNext)
+      }
+    },
+
+    /**
+     * unselect the menu item
      *
      * @param {ComponentEvent} e
      */
     handleUnselected: function (e) {
-      var node = queryWithClassnameAndText(this.root, classes.menuItemSelected, e.detail.value)
+      var node = querySelector(this.root, {
+        className: classes.menuItemSelected,
+        textContent: e.detail.value,
+      })
 
       if (node) {
         node.classList.remove(classes.menuItemSelected)
+      }
+    },
+
+    /**
+     * select the menu item
+     *
+     * @param {ComponentEvent} e
+     */
+    handleSelected: function (e) {
+      var node = querySelector(this.root, {
+        className: classes.menuItem,
+        textContent: e.detail.value,
+      })
+
+      if (node) {
+        node.classList.add(classes.menuItemSelected)
       }
     },
 
@@ -46,11 +165,9 @@ function MenuFunc() {
       if (target.classList.contains(classes.menuItem)) {
         // if the menu item is selected,then unselect it
         if (target.classList.contains(classes.menuItemSelected)) {
-          target.classList.remove(classes.menuItemSelected)
           this.trigger(events.onUnselected, text)
         } else {
           // select the item
-          target.classList.add(classes.menuItemSelected)
           this.trigger(events.onSelected, text)
         }
       }
@@ -92,6 +209,7 @@ function MenuFunc() {
      */
     handleHide: function () {
       this.root.style.display = 'none'
+      this._removeMenuItemHoverClassname()
     },
 
     /**

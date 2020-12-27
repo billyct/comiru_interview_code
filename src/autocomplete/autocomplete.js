@@ -1,4 +1,5 @@
 var utils = require('../common/utils')
+var html = require('../common/html')
 var Component = require('./component')
 var Item = require('./Item')
 var Input = require('./input')
@@ -9,11 +10,9 @@ var classes = require('./classes')
 require('./autocomplete.css')
 
 var mixin = utils.mixin
-var createElement = utils.createElement
+var createElement = html.createElement
 
-// 优化选择之后的处理
-// 增加 input 的特殊按键选择
-// 增加单选的处理
+// todo 增加单选的处理
 
 function AutoCompleteFunc() {
   function AutoComplete(opts) {

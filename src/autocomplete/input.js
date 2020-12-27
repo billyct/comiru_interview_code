@@ -1,10 +1,11 @@
 var utils = require('../common/utils')
+var html = require('../common/html')
 var Component = require('./component')
 var events = require('./events')
 var classes = require('./classes')
 
 var mixin = utils.mixin
-var createElement = utils.createElement
+var createElement = html.createElement
 
 function InputFunc() {
   function Input() {
@@ -14,7 +15,7 @@ function InputFunc() {
     root.appendChild(node)
 
     node.addEventListener('input', this.handleInput.bind(this))
-    node.addEventListener('keyup', this.handleKeyUp.bind(this))
+    node.addEventListener('keydown', this.handleKeyDown.bind(this))
 
     this.root = root
     this.node = node
@@ -66,8 +67,13 @@ function InputFunc() {
     /**
      * @param {KeyboardEvent} e
      */
-    handleKeyUp: function (e) {
+    handleKeyDown: function (e) {
       switch (e.key) {
+        case 'Backspace':
+          if (this.node.value === '') {
+            this.trigger(events.onPressBackspace)
+          }
+          break
         case 'Escape':
           this.trigger(events.onHideMenu)
           break
@@ -78,7 +84,7 @@ function InputFunc() {
           this.trigger(events.onHoverNext)
           break
         case 'Enter':
-        // @todo if selected item then input it to the input area if not then nothing
+          this.trigger(events.onPressEnter)
       }
     },
   })
