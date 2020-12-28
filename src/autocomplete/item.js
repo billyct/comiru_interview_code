@@ -48,7 +48,7 @@ function ItemFunc() {
       var target = e.target
       // if it's the item remove button
       if (target.classList.contains(classes.itemRemove)) {
-        this.trigger(events.onUnselected, target.textContent)
+        this.trigger(events.onUnselected, target.parentNode.textContent)
         target.parentNode.remove()
       }
     },
