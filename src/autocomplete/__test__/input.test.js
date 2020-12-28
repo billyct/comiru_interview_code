@@ -1,22 +1,17 @@
 /* jshint ignore:start */
-
-const {screen, fireEvent} = require('@testing-library/dom')
+const {fireEvent} = require('@testing-library/dom')
 require('@testing-library/jest-dom/extend-expect')
 
 const Input = require('../input')
 const events = require('../events')
+const classes = require('../classes')
 
-beforeEach(() => {
-  document.body.innerHTML = ''
-})
-
-it('should render with the right html', () => {
+it(`should render with the Input component's right html`, () => {
   const input = new Input()
-  document.body.appendChild(input.root)
-  expect(document.body.innerHTML).toBe(`<span class="ac__input__container"><input class="ac__input"></span>`)
+  expect(input.root).toContainHTML(`<span class="${classes.inputContainer}"><input class="${classes.input}"></span>`)
 })
 
-describe('test Input handleFocus method', () => {
+describe(`test Input Component's handleFocus method`, () => {
   it('should call handleFocus when onFocus event triggered', () => {
     const mockCallback = jest.fn()
     const spy = jest.spyOn(Input.prototype, 'handleFocus').mockImplementation(mockCallback)
@@ -35,7 +30,9 @@ describe('test Input handleFocus method', () => {
 
     input.trigger(events.onFocus)
 
-    expect(screen.getByRole('textbox')).toHaveFocus()
+    expect(input.node).toHaveFocus()
+
+    document.body.innerHTML = ''
   })
 
   it('should trigger onShowMenu event when onFocus event triggered with the input value filled', () => {
@@ -127,7 +124,7 @@ describe('test Input handleKeyDown method', () => {
 
     fireEvent.keyDown(input.node, {key: 'Backspace'})
 
-    expect(mockCallback).toBeCalledTimes(0)
+    expect(mockCallback).not.toBeCalled()
   })
 
   it('should trigger the onHideMenu events', () => {
