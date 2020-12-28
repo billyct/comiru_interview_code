@@ -1,3 +1,8 @@
 module.exports = {
-  setupFiles: ['./mockEventTarget.js'],
+  setupFiles: [
+    './mockEventTarget.js',
+  ],
+  setupFilesAfterEnv: [
+    './mockComponent.js',
+  ]
 }
