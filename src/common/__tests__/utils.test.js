@@ -1,9 +1,9 @@
 /* jshint ignore:start */
-const {mixin} = require('../src/common/utils')
+const {mixin} = require('../utils')
 
 describe('test mixin function', () => {
 
-  test('mixin two functions', () => {
+  it('should mixin two functions', () => {
     function A(x, y) {
       this.x = x;
       this.y = y;
@@ -36,7 +36,7 @@ describe('test mixin function', () => {
     expect(b.y).toBe(3)
   })
 
-  test('mixin function with object', () => {
+  it('should mixin function with object', () => {
 
     function D(d) {
       this.d = d;
