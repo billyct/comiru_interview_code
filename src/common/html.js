@@ -43,7 +43,7 @@ function querySelector(contextNode, opts) {
     xpath += '[' + opts.index + ']'
   }
 
-  return document.evaluate(xpath, contextNode).iterateNext()
+  return document.evaluate(xpath, contextNode, null, XPathResult.ANY_TYPE, null).iterateNext()
 }
 
 exports.createElement = createElement
