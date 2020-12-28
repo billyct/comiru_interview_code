@@ -3,6 +3,7 @@ var html = require('../common/html')
 var Component = require('./component')
 var events = require('./events')
 var classes = require('./classes')
+var highlight = require('./highlight')
 
 var mixin = utils.mixin
 var createElement = html.createElement
@@ -110,10 +111,7 @@ function MenuFunc() {
         node.classList.remove(classes.menuItemHover)
         nodeNext = node.nextElementSibling
       } else {
-        nodeNext = querySelector(this.root, {
-          className: classes.menuItem,
-          index: 1,
-        })
+        nodeNext = this.root.firstElementChild
       }
 
       if (nodeNext) {
@@ -183,12 +181,14 @@ function MenuFunc() {
       var data = e.detail.value
 
       var opts = data.opts
-      var selected = data.selected
+      var selectedOpts = data.selectedOpts
+      var inputValue = data.inputValue
 
       for (var i = 0; i < opts.length; i++) {
         var node = createElement('div', classes.menuItem)
-        node.textContent = opts[i]
-        if (selected.indexOf(opts[i]) >= 0) {
+
+        node.innerHTML = highlight(opts[i], inputValue)
+        if (selectedOpts.indexOf(opts[i]) >= 0) {
           // @warning
           node.classList.add(classes.menuItemSelected)
         }

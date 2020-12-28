@@ -88,7 +88,8 @@ function AutoCompleteFunc() {
 
         this.trigger(events.onRefreshMenu, {
           opts: opts,
-          selected: this.value,
+          selectedOpts: this.value,
+          inputValue: e.detail.value,
         })
       },
 
