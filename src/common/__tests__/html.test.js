@@ -25,6 +25,7 @@ describe('test querySelector function', () => {
       <li class="li">d</li>
       <li class="li">e</li>
       <li class="li">f</li>
+      <li id="strong" class="li">text with st<strong>r</string>ong</li>
     </ul>
   `
 
@@ -54,6 +55,17 @@ describe('test querySelector function', () => {
     })
 
     expect(li.textContent).toBe('b')
+  })
+
+  it('should query a element with the text with strong', () => {
+    const li = querySelector(node, {
+      className: 'li',
+      textContent: 'text with strong'
+    })
+
+    const want = document.querySelector('#strong')
+
+    expect(li).toBe(want)
   })
 
   it('should query a element then return null', () => {
