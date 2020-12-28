@@ -23,27 +23,25 @@ function createElement(tagName, classname) {
  *          index: 1,
  *        })
  *
- * @param {Node} contextNode
+ * @param {Element} contextNode
  * @param {QuerySelectorOption} opts
  * @returns {Node}
  */
 function querySelector(contextNode, opts) {
-
-  var conditions = [
-    'contains(@class, "' + opts.className + '")',
-  ]
-
+  var nodes = contextNode.querySelectorAll('.' + opts.className)
+  nodes = Array.from(nodes)
   if (opts.textContent) {
-    conditions.push('normalize-space(text()) = "' + opts.textContent + '"')
+    nodes = nodes.filter(function (node) {
+      return node.textContent === opts.textContent
+    })
   }
 
-  var xpath = '//*[' + conditions.join(' and ') + ']'
-
+  var index = 0
   if (opts.index) {
-    xpath += '[' + opts.index + ']'
+    index = opts.index - 1
   }
 
-  return document.evaluate(xpath, contextNode, null, XPathResult.ANY_TYPE, null).iterateNext()
+  return nodes[index] || null
 }
 
 exports.createElement = createElement
