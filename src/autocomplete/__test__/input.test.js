@@ -8,7 +8,7 @@ const classes = require('../classes')
 
 it(`should render with the Input component's right html`, () => {
   const input = new Input()
-  expect(input.root).toContainHTML(`<span class="${classes.inputContainer}"><input class="${classes.input}"></span>`)
+  expect(input.root).toContainHTML(`<span class="${classes.inputContainer}"><input class="${classes.input}"><span class="${classes.inputMirror}"></span></span>`)
 })
 
 describe(`test Input Component's handleFocus method`, () => {
@@ -48,7 +48,7 @@ describe(`test Input Component's handleFocus method`, () => {
   })
 })
 
-describe('test Input handleInput method', () => {
+describe(`test Input Component's handleInput method`, () => {
 
   it('should call handleInput method', () => {
     const mockCallback = jest.fn()
@@ -62,16 +62,15 @@ describe('test Input handleInput method', () => {
     spy.mockRestore()
   })
 
-  it('should call _refreshWidth method', () => {
-    const mockCallback = jest.fn()
-    const spy = jest.spyOn(Input.prototype, '_refreshWidth').mockImplementation(mockCallback)
+  it(`should update the mirror's textContent and refresh the root's width`, () => {
     const input = new Input()
 
-    fireEvent.input(input.node)
+    const inputValue = 'test'
 
-    expect(mockCallback).toBeCalledTimes(1)
+    fireEvent.input(input.node, {target: {value: inputValue}})
 
-    spy.mockRestore()
+    expect(input.mirror).toHaveTextContent(inputValue)
+    expect(input.root).toHaveStyle(`width:${input.mirror.scrollWidth}px`)
   })
 
   it('should trigger onInput event with target value', () => {
