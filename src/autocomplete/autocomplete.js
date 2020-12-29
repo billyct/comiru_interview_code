@@ -12,19 +12,16 @@ require('./autocomplete.css')
 var mixin = utils.mixin
 var createElement = html.createElement
 
-// todo 增加单选的处理
-
 function AutoCompleteFunc() {
+
   function AutoComplete(opts) {
     this.opts = opts
 
     var root = createElement('div', classes.container)
 
-    var input = new Input()
-    var menu = new Menu()
-    var item = new Item()
+    var input = new Input(opts)
+    var menu = new Menu(opts)
 
-    root.appendChild(item.root)
     root.appendChild(input.root)
     root.appendChild(menu.root)
 
@@ -34,6 +31,13 @@ function AutoCompleteFunc() {
     document.addEventListener('click', this.handleDocumentClick.bind(this))
 
     this.root = root
+
+    if (this.opts.single) {
+      this.value = ''
+    } else {
+      this.value = []
+      root.prepend(new Item().root)
+    }
 
     document.querySelector(this.opts.element).appendChild(this.root)
 
@@ -48,9 +52,6 @@ function AutoCompleteFunc() {
     AutoComplete,
     Component,
     {
-      // the value return
-      value: [],
-
       /**
        * @param {MouseEvent} e
        */
@@ -86,11 +87,18 @@ function AutoCompleteFunc() {
           return value.indexOf(v) >= 0
         })
 
-        this.trigger(events.onRefreshMenu, {
-          opts: opts,
-          selectedOpts: this.value,
-          inputValue: e.detail.value,
-        })
+        if(this.opts.single) {
+          this.trigger(events.onRefreshMenu, {
+            opts: opts,
+            inputValue: e.detail.value,
+          })
+        } else {
+          this.trigger(events.onRefreshMenu, {
+            opts: opts,
+            selectedOpts: this.value,
+            inputValue: e.detail.value,
+          })
+        }
       },
 
       /**
@@ -100,7 +108,12 @@ function AutoCompleteFunc() {
        */
       handleSelected: function (e) {
         // refresh value
-        this.value.push(e.detail.value)
+        if (this.opts.single) {
+          this.value = e.detail.value
+        } else {
+          this.value.push(e.detail.value)
+        }
+
         this.trigger(events.onChange, this.value)
       },
 

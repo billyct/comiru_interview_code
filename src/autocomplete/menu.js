@@ -11,7 +11,9 @@ var querySelector = html.querySelector
 
 function MenuFunc() {
 
-  function Menu() {
+  function Menu(opts) {
+    this.opts = opts || {}
+
     var root = createElement('div', classes.menu)
     root.addEventListener('click', this.handleClick.bind(this))
 
@@ -144,6 +146,11 @@ function MenuFunc() {
      * @param {ComponentEvent} e
      */
     handleSelected: function (e) {
+      if (this.opts.single) {
+        this.trigger(events.onHideMenu)
+        return
+      }
+
       var node = querySelector(this.root, {
         className: classes.menuItem,
         textContent: e.detail.value,
@@ -159,6 +166,9 @@ function MenuFunc() {
      * @param {MouseEvent} e
      */
     handleClick: function (e) {
+      // prevent trigger onFocus event
+      e.stopPropagation()
+
       var target = e.target
       var text = target.textContent
       // is menu item

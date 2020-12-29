@@ -8,7 +8,9 @@ var mixin = utils.mixin
 var createElement = html.createElement
 
 function InputFunc() {
-  function Input() {
+  function Input(opts) {
+    this.opts = opts || {}
+
     var root = createElement('span', classes.inputContainer)
     var node = createElement('input', classes.input)
     // inspired by https://github.com/react-component/select/blob/master/src/Selector/MultipleSelector.tsx#L214
@@ -25,7 +27,7 @@ function InputFunc() {
     this.mirror = mirror
 
     this.on(events.onFocus, this.handleFocus.bind(this))
-    // this.on(events.onSelected, this.handleSelected.bind(this))
+    this.on(events.onSelected, this.handleSelected.bind(this))
   }
 
   mixin(Input, Component, {
@@ -75,6 +77,16 @@ function InputFunc() {
           this.trigger(events.onPressEnter)
       }
     },
+
+    /**
+     * @param {ComponentEvent} e
+     */
+    handleSelected: function (e) {
+      if (this.opts.single) {
+        this.node.value = e.detail.value
+        this.handleInput()
+      }
+    }
   })
 
   return Input
