@@ -11,38 +11,24 @@ function InputFunc() {
   function Input() {
     var root = createElement('span', classes.inputContainer)
     var node = createElement('input', classes.input)
+    // inspired by https://github.com/react-component/select/blob/master/src/Selector/MultipleSelector.tsx#L214
+    var mirror = createElement('span', classes.inputMirror)
 
     root.appendChild(node)
+    root.appendChild(mirror)
 
     node.addEventListener('input', this.handleInput.bind(this))
     node.addEventListener('keydown', this.handleKeyDown.bind(this))
 
     this.root = root
     this.node = node
+    this.mirror = mirror
 
     this.on(events.onFocus, this.handleFocus.bind(this))
     // this.on(events.onSelected, this.handleSelected.bind(this))
   }
 
   mixin(Input, Component, {
-
-    /**
-     * calculate the width of the text in the input component, and set to the container
-     */
-    _refreshWidth: function () {
-      var div = document.createElement('div')
-      div.textContent = this.node.value
-      div.style.display = 'inline-block'
-
-      this.root.appendChild(div)
-
-      var width = div.offsetWidth
-
-      div.remove()
-
-      // fresh the input container's width
-      this.root.style.width = width + 'px'
-    },
 
     /**
      * focus the input node
@@ -59,7 +45,9 @@ function InputFunc() {
      * handle input
      */
     handleInput: function () {
-      this._refreshWidth()
+      // calculate the width of the text in the input component, and set to the container
+      this.mirror.innerHTML = this.node.value + "&nbsp;"
+      this.root.style.width = this.mirror.scrollWidth + 'px'
       // trigger onInput event
       this.trigger(events.onInput, this.node.value)
     },

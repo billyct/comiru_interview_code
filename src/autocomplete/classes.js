@@ -6,6 +6,7 @@ module.exports = {
   itemRemove: 'ac__item__remove',
   inputContainer: 'ac__input__container',
   input: 'ac__input',
+  inputMirror: 'ac__input--mirror',
   menu: 'ac__menu',
   menuItem: 'ac__menu__item',
   menuItemSelected: 'ac__menu__item--selected',

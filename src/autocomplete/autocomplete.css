@@ -57,6 +57,15 @@
   border: none;
 }
 
+.ac__input--mirror {
+  position: absolute;
+  z-index: 999;
+  white-space: nowrap;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+}
+
 .ac__menu {
   position: absolute;
   background-color: white;
