@@ -84,11 +84,7 @@ describe(`test Input Component's handleInput method`, () => {
     fireEvent.input(input.node, {target: {value: inputValue}})
 
     expect(mockCallback).toBeCalledTimes(1)
-    expect(mockCallback).toBeCalledWith(new CustomEvent({
-      detail: {
-        value: inputValue,
-      }
-    }))
+    expect(mockCallback.mock.calls[0][0].detail.value).toBe(inputValue)
   })
 })
 

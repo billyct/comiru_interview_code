@@ -83,11 +83,7 @@ describe(`test Item Component's handleClick method`, () => {
     fireEvent.click(item.root.firstElementChild.lastElementChild)
 
     expect(mockCallback).toBeCalledTimes(1)
-    expect(mockCallback).toBeCalledWith(new CustomEvent({
-      target: {
-        value: selectedValue,
-      },
-    }))
+    expect(mockCallback.mock.calls[0][0].detail.value).toBe(selectedValue)
   })
 })
 
@@ -143,11 +139,7 @@ describe(`test Item Component's handlePressBackspace method`, () => {
     item.trigger(events.onPressBackspace)
 
     expect(mockCallback).toBeCalledTimes(1)
-    expect(mockCallback).toBeCalledWith(new CustomEvent({
-      detail: {
-        value: selectedValue,
-      }
-    }))
+    expect(mockCallback.mock.calls[0][0].detail.value).toBe(selectedValue)
   })
 })
 
