@@ -38,7 +38,7 @@ function MenuFunc() {
      */
     _ensureVisible: function (node) {
       var nodeTop = node.offsetTop
-      var nodeBottom = node.offsetTop + node.offsetHeight
+      var nodeBottom = nodeTop + node.offsetHeight
 
       var rootScrollTop = this.root.scrollTop
       var rootHeight = this.root.clientHeight
@@ -107,9 +107,11 @@ function MenuFunc() {
         className: classes.menuItemHover,
       })
 
-      if (node && this.root.lastElementChild !== node) {
-        node.classList.remove(classes.menuItemHover)
-        nodeNext = node.nextElementSibling
+      if (node) {
+        if (this.root.lastElementChild !== node) {
+          node.classList.remove(classes.menuItemHover)
+          nodeNext = node.nextElementSibling
+        }
       } else {
         nodeNext = this.root.firstElementChild
       }
@@ -181,8 +183,8 @@ function MenuFunc() {
       var data = e.detail.value
 
       var opts = data.opts
-      var selectedOpts = data.selectedOpts
-      var inputValue = data.inputValue
+      var selectedOpts = data.selectedOpts || []
+      var inputValue = data.inputValue || ''
 
       for (var i = 0; i < opts.length; i++) {
         var node = createElement('div', classes.menuItem)
