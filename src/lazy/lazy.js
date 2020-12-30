@@ -6,7 +6,10 @@ var getElementList = html.getElementList
 
 function LazyFunc() {
   function Lazy(el){
-    var observer = new IntersectionObserver(this.handleIntersectionObserve.bind(this))
+    var observer
+    if (this.support('IntersectionObserver')) {
+      observer = new IntersectionObserver(this.handleIntersectionObserve.bind(this))
+    }
 
     var nodes = getElementList(el)
     for(var i = 0; i < nodes.length; i++ ) {
@@ -14,7 +17,13 @@ function LazyFunc() {
         continue
       }
 
-      observer.observe(nodes[i])
+      if (observer) {
+        observer.observe(nodes[i])
+        continue
+      }
+
+      this.load(nodes[i])
+      this.markAsLoaded(nodes[i])
     }
 
     this.observer = observer
@@ -64,6 +73,16 @@ function LazyFunc() {
      */
     markAsLoaded: function (node) {
       node.setAttribute('data-loaded', true)
+    },
+
+    /**
+     * check if support type feature
+     *
+     * @param {string} type
+     * @returns {Window}
+     */
+    support: function (type) {
+      return window && window[type]
     }
   })
 
