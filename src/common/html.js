@@ -58,6 +58,25 @@ function getElement(el) {
   return document.querySelector(el)
 }
 
+/**
+ * get elements
+ *
+ * @param {Element|NodeList|string} el
+ * @returns {NodeList|Element[]}
+ */
+function getElementList(el) {
+  if (el instanceof Element) {
+    return [el]
+  }
+
+  if (el instanceof NodeList) {
+    return el
+  }
+
+  return document.querySelectorAll(el)
+}
+
 exports.createElement = createElement
 exports.querySelector = querySelector
 exports.getElement = getElement
+exports.getElementList = getElementList
