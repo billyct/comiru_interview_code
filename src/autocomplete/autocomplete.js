@@ -1,13 +1,10 @@
 var utils = require('../common/utils')
 var html = require('../common/html')
-var ComponentFunc = require('../common/component')
-var ItemFunc = require('./Item')
+var ItemFunc = require('./item')
 var InputFunc = require('./input')
 var MenuFunc = require('./menu')
 var events = require('./events')
 var classes = require('./classes')
-
-require('./autocomplete.css')
 
 var mixin = utils.mixin
 var createElement = html.createElement
@@ -20,15 +17,12 @@ function AutoCompleteFunc(Component) {
 
   function AutoComplete(opts) {
 
-    this.opts = opts
+    this.opts = opts || {}
 
     var root = createElement('div', classes.container)
 
-    var input = new Input(opts)
-    var menu = new Menu(opts)
-
-    root.appendChild(input.root)
-    root.appendChild(menu.root)
+    root.appendChild(new Input(opts).root)
+    root.appendChild(new Menu(opts).root)
 
     // click the AutoComplete component then focus the input
     root.addEventListener('click', this.handleClick.bind(this))
@@ -44,10 +38,11 @@ function AutoCompleteFunc(Component) {
       root.prepend(new Item().root)
     }
 
-    document.querySelector(this.opts.element).appendChild(this.root)
-
     // bind events
-    this.on(events.onChange, this.opts.onChange.bind(this))
+    if (this.opts.onChange) {
+      this.on(events.onChange, this.opts.onChange.bind(this))
+    }
+
     this.on(events.onSelected, this.handleSelected.bind(this))
     this.on(events.onUnselected, this.handleUnselected.bind(this))
     this.on(events.onInput, this.handleInput.bind(this))
@@ -140,7 +135,4 @@ function AutoCompleteFunc(Component) {
   return AutoComplete
 }
 
-window.AutoComplete = function (opts) {
-  var AC = AutoCompleteFunc(ComponentFunc())
-  return new AC(opts)
-}
+module.exports = AutoCompleteFunc

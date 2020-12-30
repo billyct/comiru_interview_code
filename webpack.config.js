@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    autocomplete: './src/autocomplete/autocomplete.js',
+    autocomplete: './src/autocomplete/index.js',
   },
 
   watchOptions: {
