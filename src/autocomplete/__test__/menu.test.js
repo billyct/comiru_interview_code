@@ -281,6 +281,26 @@ describe(`test Menu Component's handleSelected method`, () => {
     expect(menu.root.firstElementChild).toHaveClass(classes.menuItemSelected)
     expect(menu.root.lastElementChild).toHaveClass(classes.menuItemSelected)
   })
+
+  it('should trigger onHideMenu event when single = true', () => {
+    const menu = new Menu({
+      single: true,
+    })
+
+    const mockCallback = jest.fn()
+    menu.on(events.onHideMenu, mockCallback)
+
+    menu.trigger(events.onRefreshMenu, {
+      opts: [
+        'a', 'b',
+      ]
+    })
+
+    menu.trigger(events.onSelected, 'a')
+
+    expect(mockCallback).toBeCalledTimes(1)
+    expect(menu.root.firstElementChild).not.toHaveClass(classes.menuItemSelected)
+  })
 })
 
 describe(`test Menu Component's handleClick method`, () => {

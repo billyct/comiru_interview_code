@@ -170,4 +170,50 @@ describe('test Input handleKeyDown method', () => {
   })
 })
 
+describe('test Input handleSelected method', () => {
+  it('should call handleSelected method', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(Input.prototype, 'handleSelected').mockImplementation(mockCallback)
+    const input = new Input()
+
+    input.trigger(events.onSelected)
+
+    expect(mockCallback).toBeCalledTimes(1)
+
+    spy.mockRestore()
+  })
+
+  it('should input the value and call handleInput when single = true', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(Input.prototype, 'handleInput').mockImplementation(mockCallback)
+    const input = new Input({
+      single: true,
+    })
+
+    const inputValue = 'whatever'
+
+    input.trigger(events.onSelected, inputValue)
+
+    expect(input.node).toHaveValue(inputValue)
+    expect(mockCallback).toBeCalledTimes(1)
+
+    spy.mockRestore()
+  })
+
+  it('should not input the value and not call handleInput', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(Input.prototype, 'handleInput').mockImplementation(mockCallback)
+    const input = new Input()
+
+    const inputValue = 'whatever'
+
+    input.trigger(events.onSelected, inputValue)
+
+    expect(input.node).not.toHaveValue(inputValue)
+    expect(mockCallback).not.toBeCalled()
+
+    spy.mockRestore()
+  })
+})
+
 /* jshint ignore:end */
