@@ -5,9 +5,13 @@
     <title>AutoComplete</title>
 </head>
 <body>
-<div id="ipt"></div>
+<h2>Multi Select</h2>
+<div id="multi-select"></div>
+<hr/>
+<h2>Single Select</h2>
+<div id="single-select"></div>
 
-<script src="https://cdn.bootcdn.net/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+<script src="./faker.min.js"></script>
 <script src="../dist/autocomplete.js"></script>
 <script>
 
@@ -21,14 +25,22 @@
   })()
 
 
-  var ac = new AutoComplete({
-    element: '#ipt',
+  AutoComplete('#multi-select', {
     options: fakeData,
-    // valueDefault: ['Japan', 'China'],
     onChange: function (e) {
       console.log(e.detail.value)
     }
   })
+
+  AutoComplete('#single-select', {
+    options: fakeData,
+    single: true,
+    onChange: function (e) {
+      console.log(e.detail.value)
+    }
+  })
+
+
 </script>
 </body>
 </html>
