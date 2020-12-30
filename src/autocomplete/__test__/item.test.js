@@ -39,7 +39,9 @@ describe(`test Item Component's handleSelected method`, () => {
 
     item.trigger(events.onSelected, selectedValue)
 
-    expect(item.root).toContainHTML(`<span class="${classes.item}"><span class="${classes.itemContent}">${selectedValue}</span><span class="${classes.itemRemove}"></span></span>`)
+    expect(item.root).toContainHTML(`<span class="${classes.item}">`)
+    expect(item.root).toContainHTML(`<span class="${classes.itemContent}">${selectedValue}</span>`)
+    expect(item.root).toContainHTML(`<span class="${classes.itemRemove}">`)
   })
 })
 

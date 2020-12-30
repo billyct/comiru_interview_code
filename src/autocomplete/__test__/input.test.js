@@ -15,7 +15,9 @@ beforeEach(() => {
 
 it(`should render with the Input component's right html`, () => {
   const input = new Input()
-  expect(input.root).toContainHTML(`<span class="${classes.inputContainer}"><input class="${classes.input}"><span class="${classes.inputMirror}"></span></span>`)
+  expect(input.root).toContainHTML(`<span class="${classes.inputContainer}">`)
+  expect(input.root).toContainHTML(`<input class="${classes.input}">`)
+  expect(input.root).toContainHTML(`<span class="${classes.inputMirror}">`)
 })
 
 describe(`test Input Component's handleFocus method`, () => {

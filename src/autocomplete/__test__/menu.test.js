@@ -1,5 +1,5 @@
 /* jshint ignore:start */
-const {getByText, fireEvent} = require('@testing-library/dom')
+const {fireEvent} = require('@testing-library/dom')
 require('@testing-library/jest-dom/extend-expect')
 
 const ComponentFunc = require('../../common/component')
