@@ -2,9 +2,16 @@
 const {fireEvent} = require('@testing-library/dom')
 require('@testing-library/jest-dom/extend-expect')
 
-const Input = require('../input')
+const ComponentFunc = require('../../common/component')
+const InputFunc = require('../input')
 const events = require('../events')
 const classes = require('../classes')
+
+let Input
+
+beforeEach(() => {
+  Input = InputFunc(ComponentFunc())
+})
 
 it(`should render with the Input component's right html`, () => {
   const input = new Input()

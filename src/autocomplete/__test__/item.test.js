@@ -2,9 +2,16 @@
 const {getByText, fireEvent} = require('@testing-library/dom')
 require('@testing-library/jest-dom/extend-expect')
 
-const Item = require('../item')
+const ComponentFunc = require('../../common/component')
+const ItemFunc = require('../item')
 const events = require('../events')
 const classes = require('../classes')
+
+let Item
+
+beforeEach(() => {
+  Item = ItemFunc(ComponentFunc())
+})
 
 it(`should render the Item component's html`, () => {
   let item = new Item()

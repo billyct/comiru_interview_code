@@ -2,9 +2,16 @@
 const {getByText, fireEvent} = require('@testing-library/dom')
 require('@testing-library/jest-dom/extend-expect')
 
-const Menu = require('../menu')
+const ComponentFunc = require('../../common/component')
+const MenuFunc = require('../menu')
 const events = require('../events')
 const classes = require('../classes')
+
+let Menu
+
+beforeEach(() => {
+  Menu = MenuFunc(ComponentFunc())
+})
 
 it(`should render the Item component's html`, () => {
   const menu = new Menu()

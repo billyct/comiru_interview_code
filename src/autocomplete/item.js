@@ -1,6 +1,5 @@
 var utils = require('../common/utils')
 var html = require('../common/html')
-var Component = require('./component')
 var events = require('./events')
 var classes = require('./classes')
 
@@ -8,7 +7,7 @@ var mixin = utils.mixin
 var createElement = html.createElement
 var querySelector = html.querySelector
 
-function ItemFunc() {
+function ItemFunc(Component) {
 
   function Item() {
     var root = createElement('span', classes.itemContainer)
@@ -81,4 +80,4 @@ function ItemFunc() {
   return Item
 }
 
-module.exports = ItemFunc()
+module.exports = ItemFunc

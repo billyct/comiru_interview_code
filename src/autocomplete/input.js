@@ -1,13 +1,12 @@
 var utils = require('../common/utils')
 var html = require('../common/html')
-var Component = require('./component')
 var events = require('./events')
 var classes = require('./classes')
 
 var mixin = utils.mixin
 var createElement = html.createElement
 
-function InputFunc() {
+function InputFunc(Component) {
   function Input(opts) {
     this.opts = opts || {}
 
@@ -92,4 +91,4 @@ function InputFunc() {
   return Input
 }
 
-module.exports = InputFunc()
+module.exports = InputFunc

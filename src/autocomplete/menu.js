@@ -1,6 +1,5 @@
 var utils = require('../common/utils')
 var html = require('../common/html')
-var Component = require('./component')
 var events = require('./events')
 var classes = require('./classes')
 var highlight = require('./highlight')
@@ -9,7 +8,7 @@ var mixin = utils.mixin
 var createElement = html.createElement
 var querySelector = html.querySelector
 
-function MenuFunc() {
+function MenuFunc(Component) {
 
   function Menu(opts) {
     this.opts = opts || {}
@@ -241,4 +240,4 @@ function MenuFunc() {
   return Menu
 }
 
-module.exports = MenuFunc()
+module.exports = MenuFunc

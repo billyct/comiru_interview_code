@@ -1,9 +1,9 @@
 var utils = require('../common/utils')
 var html = require('../common/html')
-var Component = require('./component')
-var Item = require('./Item')
-var Input = require('./input')
-var Menu = require('./menu')
+var ComponentFunc = require('../common/component')
+var ItemFunc = require('./Item')
+var InputFunc = require('./input')
+var MenuFunc = require('./menu')
 var events = require('./events')
 var classes = require('./classes')
 
@@ -12,9 +12,14 @@ require('./autocomplete.css')
 var mixin = utils.mixin
 var createElement = html.createElement
 
-function AutoCompleteFunc() {
+function AutoCompleteFunc(Component) {
+
+  var Input = InputFunc(Component)
+  var Menu = MenuFunc(Component)
+  var Item = ItemFunc(Component)
 
   function AutoComplete(opts) {
+
     this.opts = opts
 
     var root = createElement('div', classes.container)
@@ -57,7 +62,7 @@ function AutoCompleteFunc() {
        */
       handleDocumentClick: function (e) {
         // if the area out of AutoComplete component
-        if (e.target.contains(this.root)) {
+        if (e.target.closest(classes.container) === null) {
           this.trigger(events.onHideMenu)
         }
       },
@@ -73,7 +78,6 @@ function AutoCompleteFunc() {
       },
 
       /**
-       *
        * @param {ComponentEvent} e
        */
       handleInput: function (e) {
@@ -87,18 +91,20 @@ function AutoCompleteFunc() {
           return value.indexOf(v) >= 0
         })
 
-        if(this.opts.single) {
+        if (this.opts.single) {
           this.trigger(events.onRefreshMenu, {
             opts: opts,
             inputValue: e.detail.value,
           })
-        } else {
-          this.trigger(events.onRefreshMenu, {
-            opts: opts,
-            selectedOpts: this.value,
-            inputValue: e.detail.value,
-          })
+
+          return
         }
+
+        this.trigger(events.onRefreshMenu, {
+          opts: opts,
+          selectedOpts: this.value,
+          inputValue: e.detail.value,
+        })
       },
 
       /**
@@ -134,4 +140,7 @@ function AutoCompleteFunc() {
   return AutoComplete
 }
 
-window.AutoComplete = AutoCompleteFunc()
+window.AutoComplete = function (opts) {
+  var AC = AutoCompleteFunc(ComponentFunc())
+  return new AC(opts)
+}
