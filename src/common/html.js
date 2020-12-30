@@ -44,5 +44,20 @@ function querySelector(contextNode, opts) {
   return nodes[index] || null
 }
 
+/**
+ * get element by string or element
+ *
+ * @param {Element|string} el
+ * @returns {Element}
+ */
+function getElement(el) {
+  if (el instanceof Element) {
+    return el
+  }
+
+  return document.querySelector(el)
+}
+
 exports.createElement = createElement
 exports.querySelector = querySelector
+exports.getElement = getElement

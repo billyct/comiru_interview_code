@@ -7,24 +7,7 @@ require('../index')
 const classes = require('../classes')
 const events = require('../events')
 
-it('should render correct with string type el', function () {
-  const id = 'whatever'
-  const node = document.createElement('div')
-  node.id = id
-
-  document.body.appendChild(node)
-
-  AutoComplete(`#${id}`, {})
-
-  expect(node).toContainHTML(`<div class="${classes.container}">`)
-  expect(node).toContainHTML(`<input class="${classes.input}">`)
-  expect(node).toContainHTML(`<div class="${classes.menu}">`)
-  expect(node).toContainHTML(`<span class="${classes.itemContainer}">`)
-
-  document.body.innerHTML = ''
-})
-
-it('should render correct with Element type el', function () {
+it('should render correct', function () {
   const node = document.createElement('div')
 
   AutoComplete(node, {})

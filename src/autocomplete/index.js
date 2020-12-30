@@ -1,7 +1,10 @@
 var ComponentFunc = require('../common/component')
+var html = require('../common/html')
 var AutoCompleteFunc = require('./autocomplete')
 
 require('./autocomplete.css')
+
+var getElement = html.getElement
 
 /**
  * @param {Element|string} el
@@ -12,11 +15,7 @@ window.AutoComplete = function (el, opts) {
   var AC = AutoCompleteFunc(ComponentFunc())
   var ac =  new AC(opts)
 
-  if (el instanceof Element) {
-    el.appendChild(ac.root)
-  } else if (typeof el === 'string') {
-    document.querySelector(el).appendChild(ac.root)
-  }
+  getElement(el).appendChild(ac.root)
 
   return ac
 }

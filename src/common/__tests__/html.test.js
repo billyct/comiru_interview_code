@@ -1,5 +1,5 @@
 /* jshint ignore:start */
-const {querySelector, createElement} =  require('../html')
+const {querySelector, createElement, getElement} =  require('../html')
 
 describe('test createElement function', () => {
   it('should create a div element with classname c1', () => {
@@ -76,6 +76,27 @@ describe('test querySelector function', () => {
     })
 
     expect(li).toBeNull()
+  })
+})
+
+describe('test getElement function', () => {
+  it('should call document.querySelector ', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(document, 'querySelector').mockImplementation(mockCallback)
+
+    const el = 'whatever'
+
+    getElement(el)
+
+    expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback).toBeCalledWith(el)
+
+    spy.mockRestore()
+  })
+
+  it('should return el self', () => {
+    const el = document.createElement('div')
+    expect(getElement(el)).toBe(el)
   })
 })
 
