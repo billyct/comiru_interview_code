@@ -79,6 +79,7 @@
   left: -1px;
   top: 110%;
   display: none;
+  z-index: 999;
 }
 
 .ac__menu__item {
