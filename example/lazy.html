@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lazy</title>
+    <style>
+
+        ul {
+          list-style: none;
+        }
+
+        li {
+          padding: 32px 0;
+          min-height: 500px;
+        }
+
+    </style>
+</head>
+<body>
+
+<ul></ul>
+
+<script src="./faker.min.js"></script>
+<script src="../dist/lazy.js"></script>
+<script>
+
+  var ul = document.querySelector('ul')
+  for (var i = 0; i < 100; i++) {
+    var li = document.createElement('li')
+    var image = document.createElement('img')
+    image.setAttribute('data-src', 'https://picsum.photos/500')
+    image.src = 'https://via.placeholder.com/500'
+
+    li.appendChild(image)
+    ul.appendChild(li)
+  }
+
+  Lazy('img')
+
+</script>
+</body>
+</html>
