@@ -10,8 +10,13 @@ var querySelector = html.querySelector
 
 function MenuFunc(Component) {
 
-  function Menu(opts) {
-    this.opts = opts || {}
+  var opts = {}
+  if (arguments.length > 1) {
+    opts = arguments[1]
+  }
+
+  function Menu() {
+    this.opts = opts
 
     var root = createElement('div', classes.menu)
     root.addEventListener('click', this.handleClick.bind(this))

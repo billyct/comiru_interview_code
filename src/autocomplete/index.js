@@ -12,8 +12,8 @@ var getElement = html.getElement
  * @constructor
  */
 window.AutoComplete = function (el, opts) {
-  var AC = AutoCompleteFunc(ComponentFunc())
-  var ac =  new AC(opts)
+  var AC = AutoCompleteFunc(ComponentFunc(), opts)
+  var ac =  new AC()
 
   getElement(el).appendChild(ac.root)
 

@@ -7,8 +7,14 @@ var mixin = utils.mixin
 var createElement = html.createElement
 
 function InputFunc(Component) {
-  function Input(opts) {
-    this.opts = opts || {}
+
+  var opts = {}
+  if (arguments.length > 1) {
+    opts = arguments[1]
+  }
+
+  function Input() {
+    this.opts = opts
 
     var root = createElement('span', classes.inputContainer)
     var node = createElement('input', classes.input)

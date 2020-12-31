@@ -11,18 +11,23 @@ var createElement = html.createElement
 
 function AutoCompleteFunc(Component) {
 
-  var Input = InputFunc(Component)
-  var Menu = MenuFunc(Component)
-  var Item = ItemFunc(Component)
+  var opts = {}
+  if (arguments.length > 1) {
+    opts = arguments[1]
+  }
 
-  function AutoComplete(opts) {
+  var Input = InputFunc.apply(this, arguments)
+  var Menu = MenuFunc.apply(this, arguments)
+  var Item = ItemFunc.apply(this, arguments)
 
-    this.opts = opts || {}
+  function AutoComplete() {
+
+    this.opts = opts
 
     var root = createElement('div', classes.container)
 
-    root.appendChild(new Input(opts).root)
-    root.appendChild(new Menu(opts).root)
+    root.appendChild(new Input().root)
+    root.appendChild(new Menu().root)
 
     // click the AutoComplete component then focus the input
     root.addEventListener('click', this.handleClick.bind(this))

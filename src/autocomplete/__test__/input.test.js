@@ -188,9 +188,8 @@ describe('test Input handleSelected method', () => {
   it('should input the value and call handleInput when single = true', () => {
     const mockCallback = jest.fn()
     const spy = jest.spyOn(Input.prototype, 'handleInput').mockImplementation(mockCallback)
-    const input = new Input({
-      single: true,
-    })
+    const input = new Input()
+    input.opts.single = true
 
     const inputValue = 'whatever'
 

@@ -283,9 +283,8 @@ describe(`test Menu Component's handleSelected method`, () => {
   })
 
   it('should trigger onHideMenu event when single = true', () => {
-    const menu = new Menu({
-      single: true,
-    })
+    const menu = new Menu()
+    menu.opts.single = true
 
     const mockCallback = jest.fn()
     menu.on(events.onHideMenu, mockCallback)

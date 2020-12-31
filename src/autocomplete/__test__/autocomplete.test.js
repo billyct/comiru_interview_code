@@ -18,7 +18,9 @@ afterAll(() => {
 
 let AutoComplete
 beforeEach(() => {
-  AutoComplete = AutoCompleteFunc(ComponentFunc())
+  AutoComplete = AutoCompleteFunc(ComponentFunc(), {
+    options: [],
+  })
 })
 
 it('should render correct', () => {
@@ -30,22 +32,16 @@ it('should render correct', () => {
   expect(ac.value).toEqual([])
 })
 
-it('should render correct with single = true', () => {
-  const ac = new AutoComplete({
-    single: true,
-  })
-  expect(ac.root).toContainHTML(`<div class="${classes.container}">`)
-  expect(ac.root).toContainHTML(`<input class="${classes.input}">`)
-  expect(ac.root).toContainHTML(`<div class="${classes.menu}">`)
-  expect(ac.root).not.toContainHTML(`<span class="${classes.itemContainer}">`)
-  expect(ac.value).toBe('')
-})
+
 
 it('should listen onChange event', () => {
   const mockCallback = jest.fn()
-  const ac = new AutoComplete({
+
+  AutoComplete = AutoCompleteFunc(ComponentFunc(), {
     onChange: mockCallback,
   })
+
+  const ac = new AutoComplete()
 
   ac.trigger(events.onChange)
 
@@ -159,9 +155,7 @@ describe(`test AutoComplete Component's handleInput method`, () => {
   })
 
   it('should trigger onRefreshMenu event', function () {
-    const ac = new AutoComplete({
-      options: [],
-    })
+    const ac = new AutoComplete()
     const mockCallback = jest.fn()
     ac.on(events.onRefreshMenu, mockCallback)
 
@@ -173,25 +167,6 @@ describe(`test AutoComplete Component's handleInput method`, () => {
     expect(mockCallback.mock.calls[0][0].detail.value).toEqual({
       opts: [],
       selectedOpts: [],
-      inputValue: inputValue,
-    })
-  })
-
-  it('should trigger onRefreshMenu event when single = true', function () {
-    const ac = new AutoComplete({
-      options: [],
-      single: true,
-    })
-    const mockCallback = jest.fn()
-    ac.on(events.onRefreshMenu, mockCallback)
-
-    const inputValue = 'whatever'
-
-    ac.trigger(events.onInput, inputValue)
-
-    expect(mockCallback).toBeCalledTimes(1)
-    expect(mockCallback.mock.calls[0][0].detail.value).toEqual({
-      opts: [],
       inputValue: inputValue,
     })
   })
@@ -225,23 +200,6 @@ describe(`test AutoComplete Component's handleSelected method`, () => {
     expect(mockCallback).toBeCalledTimes(1)
     expect(mockCallback.mock.calls[0][0].detail.value).toEqual([selectedValue])
   })
-
-  it('should trigger onChange event when single = true', () => {
-    const ac = new AutoComplete({
-      // the input will call the onInput event
-      options: [],
-      single: true,
-    })
-    const mockCallback = jest.fn()
-    ac.on(events.onChange, mockCallback)
-
-    const selectedValue = 'whatever'
-    // should trigger with text, cause of the autocomplete component contain other components
-    ac.trigger(events.onSelected, selectedValue)
-
-    expect(mockCallback).toBeCalledTimes(1)
-    expect(mockCallback.mock.calls[0][0].detail.value).toEqual(selectedValue)
-  })
 })
 
 describe(`test AutoComplete Component's handleUnselected method`, () => {
@@ -272,6 +230,55 @@ describe(`test AutoComplete Component's handleUnselected method`, () => {
     expect(mockCallback).toBeCalledTimes(1)
     expect(mockCallback.mock.calls[0][0].detail.value).toEqual([])
   })
+})
+
+describe('test AutoComplete Component when single = true', () => {
+  beforeEach(() => {
+    AutoComplete = AutoCompleteFunc(ComponentFunc(), {
+      options: [],
+      single: true,
+    })
+  })
+
+  it('should render correct with single = true', () => {
+    const ac = new AutoComplete()
+
+    expect(ac.root).toContainHTML(`<div class="${classes.container}">`)
+    expect(ac.root).toContainHTML(`<input class="${classes.input}">`)
+    expect(ac.root).toContainHTML(`<div class="${classes.menu}">`)
+    expect(ac.root).not.toContainHTML(`<span class="${classes.itemContainer}">`)
+    expect(ac.value).toBe('')
+  })
+
+  it('should trigger onChange event when single = true', () => {
+    const ac = new AutoComplete()
+    const mockCallback = jest.fn()
+    ac.on(events.onChange, mockCallback)
+
+    const selectedValue = 'whatever'
+    // should trigger with text, cause of the autocomplete component contain other components
+    ac.trigger(events.onSelected, selectedValue)
+
+    expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback.mock.calls[0][0].detail.value).toEqual(selectedValue)
+  })
+
+  it('should trigger onRefreshMenu event when single = true', function () {
+    const ac = new AutoComplete()
+    const mockCallback = jest.fn()
+    ac.on(events.onRefreshMenu, mockCallback)
+
+    const inputValue = 'whatever'
+
+    ac.trigger(events.onInput, inputValue)
+
+    expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback.mock.calls[0][0].detail.value).toEqual({
+      opts: [],
+      inputValue: inputValue,
+    })
+  })
+
 })
 
 
