@@ -4,8 +4,17 @@ var html = require('../common/html')
 var mixin = utils.mixin
 var getElementList = html.getElementList
 
-function LazyFunc() {
-  function Lazy(el){
+function LazyFunc(el) {
+
+  var opts = {}
+
+  if (arguments.length > 1) {
+    opts = arguments[1]
+  }
+
+  function Lazy(){
+    this.opts = opts
+
     var observer
     if (this.support('IntersectionObserver')) {
       observer = new IntersectionObserver(this.handleIntersectionObserve.bind(this))
@@ -24,6 +33,7 @@ function LazyFunc() {
 
       this.load(nodes[i])
       this.markAsLoaded(nodes[i])
+      this.loaded(nodes[i])
     }
 
     this.observer = observer
@@ -44,6 +54,7 @@ function LazyFunc() {
           if (!self.isLoaded(entry.target)) {
             self.load(entry.target)
             self.markAsLoaded(entry.target)
+            self.loaded(entry.target)
           }
         }
       })
@@ -83,6 +94,15 @@ function LazyFunc() {
      */
     support: function (type) {
       return window && window[type]
+    },
+
+    /**
+     * @param {Element} node
+     */
+    loaded: function (node) {
+      if (this.opts.onLoaded) {
+        this.opts.onLoaded(node)
+      }
     }
   })
 
