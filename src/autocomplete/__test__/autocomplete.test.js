@@ -144,7 +144,7 @@ describe(`test AutoComplete Component's handleInput method`, () => {
     spy.mockRestore()
   })
 
-  it('should not trigger onRefreshMenu event', function () {
+  it('should not trigger onRefreshMenu event when input value is empty', function () {
     const ac = new AutoComplete()
     const mockCallback = jest.fn()
     ac.on(events.onRefreshMenu, mockCallback)
@@ -154,18 +154,45 @@ describe(`test AutoComplete Component's handleInput method`, () => {
     expect(mockCallback).not.toBeCalled()
   })
 
-  it('should trigger onRefreshMenu event', function () {
+  it('should not trigger onRefreshMenu event when options is empty', function () {
     const ac = new AutoComplete()
     const mockCallback = jest.fn()
     ac.on(events.onRefreshMenu, mockCallback)
 
-    const inputValue = 'whatever'
+    ac.trigger(events.onInput, 'whatever')
+
+    expect(mockCallback).not.toBeCalled()
+  })
+
+  it('should trigger onHideMenu event when options is empty', function () {
+    const ac = new AutoComplete()
+    const mockCallback = jest.fn()
+    ac.on(events.onHideMenu, mockCallback)
+
+    ac.trigger(events.onInput, 'whatever')
+
+    expect(mockCallback).toBeCalled()
+  })
+
+  it('should trigger onRefreshMenu event', function () {
+    AutoComplete = AutoCompleteFunc(ComponentFunc(), {
+      options: [
+        'a', 'b'
+      ],
+    })
+    const ac = new AutoComplete()
+    const mockCallback = jest.fn()
+    ac.on(events.onRefreshMenu, mockCallback)
+
+    const inputValue = 'a'
 
     ac.trigger(events.onInput, inputValue)
 
     expect(mockCallback).toBeCalledTimes(1)
     expect(mockCallback.mock.calls[0][0].detail.value).toEqual({
-      opts: [],
+      opts: [
+        'a'
+      ],
       selectedOpts: [],
       inputValue: inputValue,
     })
@@ -264,17 +291,26 @@ describe('test AutoComplete Component when single = true', () => {
   })
 
   it('should trigger onRefreshMenu event when single = true', function () {
+    AutoComplete = AutoCompleteFunc(ComponentFunc(), {
+      options: [
+        'a', 'b'
+      ],
+      single: true,
+    })
+
     const ac = new AutoComplete()
     const mockCallback = jest.fn()
     ac.on(events.onRefreshMenu, mockCallback)
 
-    const inputValue = 'whatever'
+    const inputValue = 'a'
 
     ac.trigger(events.onInput, inputValue)
 
     expect(mockCallback).toBeCalledTimes(1)
     expect(mockCallback.mock.calls[0][0].detail.value).toEqual({
-      opts: [],
+      opts: [
+        'a'
+      ],
       inputValue: inputValue,
     })
   })
