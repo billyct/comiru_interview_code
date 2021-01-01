@@ -1,6 +1,10 @@
 var LazyFunc = require('./lazy')
 
-window.Lazy = function () {
+var Lazy = function () {
   var L = LazyFunc.apply(this, arguments)
   return new L()
 }
+
+window.Lazy = Lazy
+
+module.exports = Lazy
