@@ -32,20 +32,36 @@ it('should render correct', () => {
   expect(ac.value).toEqual([])
 })
 
+describe(`test AutoComplete Component's opt events`, () => {
+  it('should trigger events defined', () => {
+    const keyDefined = (es => {
+      const keys = Object.keys(es);
+      return keys[ keys.length * Math.random() << 0]
+    })(events)
 
+    const mockCallback = jest.fn()
+    AutoComplete = AutoCompleteFunc(ComponentFunc(), {
+      [keyDefined]: mockCallback,
+    })
 
-it('should listen onChange event', () => {
-  const mockCallback = jest.fn()
+    const ac = new AutoComplete()
+    ac.trigger(events[keyDefined], 'whatever')
 
-  AutoComplete = AutoCompleteFunc(ComponentFunc(), {
-    onChange: mockCallback,
+    expect(mockCallback).toBeCalledTimes(1)
   })
 
-  const ac = new AutoComplete()
+  it('should not trigger events undefined', () => {
+    const fakeEvent = 'onX'
+    const mockCallback = jest.fn()
+    AutoComplete = AutoCompleteFunc(ComponentFunc(), {
+      [fakeEvent]: mockCallback,
+    })
 
-  ac.trigger(events.onChange)
+    const ac = new AutoComplete()
+    ac.trigger(fakeEvent)
 
-  expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback).not.toBeCalled()
+  })
 })
 
 describe(`test AutoComplete Component's handleDocumentClick method`, () => {
@@ -61,8 +77,6 @@ describe(`test AutoComplete Component's handleDocumentClick method`, () => {
   beforeEach(() => {
     document.body.innerHTML = ''
   })
-
-
 
   it('should call handleDocumentClick method', () => {
     const mockCallback = jest.fn()

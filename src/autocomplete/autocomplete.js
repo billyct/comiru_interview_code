@@ -16,6 +16,14 @@ function AutoCompleteFunc(Component) {
     opts = arguments[1]
   }
 
+  // bind events with new instance
+  for(var e in opts){
+    if (/^on/.test(e) && events[e]) {
+      var c = new Component()
+      c.on(events[e], opts[e].bind(c))
+    }
+  }
+
   var Input = InputFunc.apply(this, arguments)
   var Menu = MenuFunc.apply(this, arguments)
   var Item = ItemFunc.apply(this, arguments)
@@ -41,11 +49,6 @@ function AutoCompleteFunc(Component) {
     } else {
       this.value = []
       root.prepend(new Item().root)
-    }
-
-    // bind events
-    if (this.opts.onChange) {
-      this.on(events.onChange, this.opts.onChange.bind(this))
     }
 
     this.on(events.onSelected, this.handleSelected.bind(this))
