@@ -11,7 +11,7 @@ var getElement = html.getElement
  * @param {Object} opts
  * @constructor
  */
-window.AutoComplete = function (el, opts) {
+var AutoComplete = function (el, opts) {
   var AC = AutoCompleteFunc(ComponentFunc(), opts)
   var ac =  new AC()
 
@@ -19,3 +19,7 @@ window.AutoComplete = function (el, opts) {
 
   return ac
 }
+
+window.AutoComplete = AutoComplete
+
+module.exports = AutoComplete
