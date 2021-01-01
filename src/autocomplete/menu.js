@@ -211,12 +211,19 @@ function MenuFunc(Component) {
 
         this.root.appendChild(node)
       }
+
+      this.trigger(events.onShowMenu)
     },
 
     /**
      * show the menu
      */
     handleShow: function () {
+      if (this.root.innerHTML === '') {
+        this.trigger(events.onHideMenu)
+        return
+      }
+
       this.root.style.display = 'block'
     },
 

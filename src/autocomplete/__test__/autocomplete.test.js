@@ -41,6 +41,7 @@ describe(`test AutoComplete Component's opt events`, () => {
 
     const mockCallback = jest.fn()
     AutoComplete = AutoCompleteFunc(ComponentFunc(), {
+      options:[],
       [keyDefined]: mockCallback,
     })
 
@@ -166,26 +167,6 @@ describe(`test AutoComplete Component's handleInput method`, () => {
     ac.trigger(events.onInput, '')
 
     expect(mockCallback).not.toBeCalled()
-  })
-
-  it('should not trigger onRefreshMenu event when options is empty', function () {
-    const ac = new AutoComplete()
-    const mockCallback = jest.fn()
-    ac.on(events.onRefreshMenu, mockCallback)
-
-    ac.trigger(events.onInput, 'whatever')
-
-    expect(mockCallback).not.toBeCalled()
-  })
-
-  it('should trigger onHideMenu event when options is empty', function () {
-    const ac = new AutoComplete()
-    const mockCallback = jest.fn()
-    ac.on(events.onHideMenu, mockCallback)
-
-    ac.trigger(events.onInput, 'whatever')
-
-    expect(mockCallback).toBeCalled()
   })
 
   it('should trigger onRefreshMenu event', function () {

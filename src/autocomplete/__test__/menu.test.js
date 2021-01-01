@@ -433,6 +433,19 @@ describe(`test Menu Component's handleRefreshMenu method`, () => {
     expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><strong>b</strong>c</div>`)
     expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">c<strong>b</strong></div>`)
   })
+
+  it('should trigger onShowMenu event', function () {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(Menu.prototype, 'handleShow').mockImplementation(mockCallback)
+
+    const menu = new Menu()
+    menu.trigger(events.onRefreshMenu, {
+      opts: [],
+    })
+
+    expect(mockCallback).toBeCalledTimes(1)
+    spy.mockRestore()
+  })
 })
 
 describe(`test Menu Component's handleShow method`, () => {
@@ -451,8 +464,20 @@ describe(`test Menu Component's handleShow method`, () => {
 
   it(`should set style.display = 'block'`, () => {
     const menu = new Menu()
+    menu.root.innerHTML = 'whatever'
     menu.trigger(events.onShowMenu)
     expect(menu.root).toHaveStyle(`display:block;`)
+  })
+
+  it(`should trigger onHideMenu event`, () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(Menu.prototype, 'handleHide').mockImplementation(mockCallback)
+
+    const menu = new Menu()
+    menu.trigger(events.onShowMenu)
+
+    expect(mockCallback).toBeCalledTimes(1)
+    spy.mockRestore()
   })
 })
 

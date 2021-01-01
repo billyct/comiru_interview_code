@@ -76,10 +76,11 @@
   width: 100%;
   max-height: 200px;
   overflow: scroll;
-  left: -1px;
+  left: 0;
   top: 110%;
   display: none;
   z-index: 999;
+  box-sizing: border-box;
 }
 
 .ac__menu__item {

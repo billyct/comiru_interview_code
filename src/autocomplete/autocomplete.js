@@ -94,11 +94,6 @@ function AutoCompleteFunc(Component) {
           return value.indexOf(v) >= 0
         })
 
-        if (opts.length <= 0){
-          this.trigger(events.onHideMenu)
-          return
-        }
-
         if (this.opts.single) {
           this.trigger(events.onRefreshMenu, {
             opts: opts,
