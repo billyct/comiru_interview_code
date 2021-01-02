@@ -1,6 +1,7 @@
 module.exports = {
   setupFiles: [
     './mockEventTarget.js',
+    './jestHelpers.js',
   ],
 
   moduleNameMapper: {
