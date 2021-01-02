@@ -86,13 +86,13 @@ function AutoCompleteFunc(Component) {
       handleInput: function (e) {
         var v = e.detail.value
 
-        if (v === '') {
-          return
-        }
+        var opts = []
 
-        var opts = this.opts.options.filter(function (value) {
-          return value.indexOf(v) >= 0
-        })
+        if (v !== '') {
+          opts = this.opts.options.filter(function (value) {
+            return value.indexOf(v) >= 0
+          })
+        }
 
         if (this.opts.single) {
           this.trigger(events.onRefreshMenu, {

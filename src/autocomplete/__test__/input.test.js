@@ -44,16 +44,18 @@ describe(`test Input Component's handleFocus method`, () => {
     document.body.innerHTML = ''
   })
 
-  it('should trigger onShowMenu event when onFocus event triggered with the input value filled', () => {
+  it('should trigger onInput event when onFocus event triggered with the input value filled', () => {
     const mockCallback = jest.fn()
 
+    const inputValue = 'test'
     const input = new Input()
-    input.on(events.onShowMenu, mockCallback)
-    input.node.value = 'test'
+    input.on(events.onInput, mockCallback)
+    input.node.value = inputValue
 
     input.trigger(events.onFocus)
 
     expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback.mock.calls[0][0].detail.value).toBe(inputValue)
   })
 })
 

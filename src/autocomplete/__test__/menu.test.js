@@ -51,14 +51,14 @@ describe(`test Menu Component's handlePressEnter method`, () => {
       spy.mockRestore()
     })
 
-    it(`should trigger root's click event`, function () {
+    it(`should trigger root's click event`, () => {
       menu.root.firstElementChild.classList.add(classes.menuItemHover)
 
       menu.trigger(events.onPressEnter)
       expect(mockCallback).toBeCalledTimes(1)
     })
 
-    it(`should not trigger root's click event`, function () {
+    it(`should not trigger root's click event`, () => {
       menu.trigger(events.onPressEnter)
       expect(mockCallback).not.toBeCalled()
     })
@@ -237,7 +237,7 @@ describe(`test Menu Component's handleUnselected method`, () => {
     expect(menu.root.lastElementChild).not.toHaveClass(classes.menuItemSelected)
   })
 
-  it('should remove the menuItemSelected class', function () {
+  it('should remove the menuItemSelected class', () => {
     const menu = new Menu()
     menu.trigger(events.onRefreshMenu, {
       opts: [
@@ -292,7 +292,8 @@ describe(`test Menu Component's handleSelected method`, () => {
     menu.trigger(events.onRefreshMenu, {
       opts: [
         'a', 'b',
-      ]
+      ],
+      inputValue: 'filled',
     })
 
     menu.trigger(events.onSelected, 'a')
@@ -434,17 +435,48 @@ describe(`test Menu Component's handleRefreshMenu method`, () => {
     expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">c<strong>b</strong></div>`)
   })
 
-  it('should trigger onShowMenu event', function () {
+  it('should trigger onHideMenu event when opts is empty', () => {
     const mockCallback = jest.fn()
-    const spy = jest.spyOn(Menu.prototype, 'handleShow').mockImplementation(mockCallback)
 
     const menu = new Menu()
+    menu.on(events.onHideMenu, mockCallback)
     menu.trigger(events.onRefreshMenu, {
       opts: [],
+      inputValue: 'filled',
     })
 
     expect(mockCallback).toBeCalledTimes(1)
-    spy.mockRestore()
+  })
+
+  it('should trigger onHideMenu event when input value is empty', () => {
+    const mockCallback = jest.fn()
+
+    const menu = new Menu()
+    menu.on(events.onHideMenu, mockCallback)
+    menu.trigger(events.onRefreshMenu, {
+      opts: [
+        'a'
+      ],
+      inputValue: '',
+    })
+
+    expect(mockCallback).toBeCalledTimes(1)
+  })
+
+  it('should trigger onShowMenu event', () => {
+    const mockCallback = jest.fn()
+
+    const menu = new Menu()
+    menu.on(events.onShowMenu, mockCallback)
+
+    menu.trigger(events.onRefreshMenu, {
+      opts: [
+        'a',
+      ],
+      inputValue: 'filled',
+    })
+
+    expect(mockCallback).toBeCalledTimes(1)
   })
 })
 
@@ -467,17 +499,6 @@ describe(`test Menu Component's handleShow method`, () => {
     menu.root.innerHTML = 'whatever'
     menu.trigger(events.onShowMenu)
     expect(menu.root).toHaveStyle(`display:block;`)
-  })
-
-  it(`should trigger onHideMenu event`, () => {
-    const mockCallback = jest.fn()
-    const spy = jest.spyOn(Menu.prototype, 'handleHide').mockImplementation(mockCallback)
-
-    const menu = new Menu()
-    menu.trigger(events.onShowMenu)
-
-    expect(mockCallback).toBeCalledTimes(1)
-    spy.mockRestore()
   })
 })
 
@@ -513,43 +534,5 @@ describe(`test Menu Component's handleHide method`, () => {
     menu.trigger(events.onHideMenu)
 
     expect(menu.root.firstElementChild).not.toHaveClass(classes.menuItemHover)
-  })
-})
-
-
-describe(`test Menu Component's handleInput method`, () => {
-  it('should call handleInput method', () => {
-    const mockCallback = jest.fn()
-    const spy = jest.spyOn(Menu.prototype, 'handleInput').mockImplementation(mockCallback)
-
-    const menu = new Menu()
-
-    menu.trigger(events.onInput)
-
-    expect(mockCallback).toBeCalledTimes(1)
-
-    spy.mockRestore()
-  })
-
-  it('should trigger onShowMenu event', () => {
-    const menu = new Menu()
-
-    const mockCallback = jest.fn()
-    menu.on(events.onShowMenu, mockCallback)
-
-    menu.trigger(events.onInput, 'whatever')
-
-    expect(mockCallback).toBeCalledTimes(1)
-  })
-
-  it('should trigger onHideMenu event', () => {
-    const menu = new Menu()
-
-    const mockCallback = jest.fn()
-    menu.on(events.onHideMenu, mockCallback)
-
-    menu.trigger(events.onInput, '')
-
-    expect(mockCallback).toBeCalledTimes(1)
   })
 })

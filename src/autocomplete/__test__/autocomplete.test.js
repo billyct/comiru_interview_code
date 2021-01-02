@@ -159,14 +159,14 @@ describe(`test AutoComplete Component's handleInput method`, () => {
     spy.mockRestore()
   })
 
-  it('should not trigger onRefreshMenu event when input value is empty', function () {
+  it('should trigger onRefreshMenu with empty input', function () {
     const ac = new AutoComplete()
     const mockCallback = jest.fn()
     ac.on(events.onRefreshMenu, mockCallback)
 
     ac.trigger(events.onInput, '')
 
-    expect(mockCallback).not.toBeCalled()
+    expect(mockCallback).toBeCalledTimes(1)
   })
 
   it('should trigger onRefreshMenu event', function () {

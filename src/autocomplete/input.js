@@ -44,7 +44,7 @@ function InputFunc(Component) {
       this.node.focus()
 
       if (this.node.value !== '') {
-        this.trigger(events.onShowMenu)
+        this.trigger(events.onInput, this.node.value)
       }
     },
 

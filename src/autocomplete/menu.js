@@ -24,7 +24,6 @@ function MenuFunc(Component) {
     this.root = root
 
     this.on(events.onRefreshMenu, this.handleRefreshMenu.bind(this))
-    this.on(events.onInput, this.handleInput.bind(this))
     this.on(events.onHideMenu, this.handleHide.bind(this))
     this.on(events.onShowMenu, this.handleShow.bind(this))
     this.on(events.onUnselected, this.handleUnselected.bind(this))
@@ -212,6 +211,11 @@ function MenuFunc(Component) {
         this.root.appendChild(node)
       }
 
+      if (this.root.innerHTML === '' || inputValue === '') {
+        this.trigger(events.onHideMenu)
+        return
+      }
+
       this.trigger(events.onShowMenu)
     },
 
@@ -219,11 +223,6 @@ function MenuFunc(Component) {
      * show the menu
      */
     handleShow: function () {
-      if (this.root.innerHTML === '') {
-        this.trigger(events.onHideMenu)
-        return
-      }
-
       this.root.style.display = 'block'
     },
 
@@ -234,20 +233,7 @@ function MenuFunc(Component) {
       this.root.style.display = 'none'
       this._removeMenuItemHoverClassname()
     },
-
-    /**
-     * @param {ComponentEvent} e
-     */
-    handleInput: function (e) {
-      if (e.detail && e.detail.value !== '') {
-        this.trigger(events.onShowMenu)
-        return
-      }
-
-      this.trigger(events.onHideMenu)
-    },
   })
-
 
   return Menu
 }
