@@ -1,8 +1,12 @@
 var LazyFunc = require('./lazy')
 
-var Lazy = function () {
-  var L = LazyFunc.apply(this, arguments)
-  return new L()
+var Lazy = function (el, opts) {
+  var L = LazyFunc(opts)
+  var l =  new L()
+  // observe the elements here
+  l.observe(el)
+
+  return l
 }
 
 window.Lazy = Lazy

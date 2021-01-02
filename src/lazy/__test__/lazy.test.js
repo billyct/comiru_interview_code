@@ -6,7 +6,70 @@ const LazyFunc = require('../lazy')
 let Lazy
 
 beforeAll(() => {
-  Lazy = LazyFunc('test')
+  Lazy = LazyFunc()
+})
+
+describe(`test Lazy Component's observe method`, () => {
+  it('should call this.observer.observe()', () => {
+    const lazy = new Lazy()
+    const mockCallback = jest.fn()
+    lazy.observer = {
+      observe: mockCallback,
+    }
+
+    const node = document.createElement('img')
+
+    lazy.observe(node)
+
+    expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback).toBeCalledWith(node)
+  })
+
+  it('should call load, markAsLoaded or loaded method', function () {
+
+    const key = randomElement([
+      'load',
+      'markAsLoaded',
+      'loaded',
+    ])
+
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(Lazy.prototype, key).mockImplementation(mockCallback)
+
+    const lazy = new Lazy()
+
+    const node = document.createElement('img')
+
+    lazy.observe(node)
+
+    expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback).toBeCalledWith(node)
+
+    spy.mockRestore()
+  })
+
+  it('should not call load, markAsLoaded or loaded method', function () {
+
+    const key = randomElement([
+      'load',
+      'markAsLoaded',
+      'loaded',
+    ])
+
+    const mockCallback = jest.fn()
+    jest.spyOn(Lazy.prototype, key).mockImplementation(mockCallback)
+    jest.spyOn(Lazy.prototype, 'isLoaded').mockImplementation(jest.fn(() => true))
+
+    const lazy = new Lazy()
+
+    const node = document.createElement('img')
+
+    lazy.observe(node)
+
+    expect(mockCallback).not.toBeCalled()
+
+    jest.restoreAllMocks()
+  })
 })
 
 describe(`test Lazy Component's isLoaded method`, () => {

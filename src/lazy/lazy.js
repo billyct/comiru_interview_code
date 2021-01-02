@@ -4,42 +4,43 @@ var html = require('../common/html')
 var mixin = utils.mixin
 var getElementList = html.getElementList
 
-function LazyFunc(el) {
-
-  var opts = {}
-
-  if (arguments.length > 1) {
-    opts = arguments[1]
-  }
+function LazyFunc(opts) {
 
   function Lazy(){
-    this.opts = opts
+    this.opts = opts || {}
 
     var observer
     if (this.support('IntersectionObserver')) {
       observer = new IntersectionObserver(this.handleIntersectionObserve.bind(this))
     }
 
-    var nodes = getElementList(el)
-    for(var i = 0; i < nodes.length; i++ ) {
-      if (this.isLoaded(nodes[i])) {
-        continue
-      }
-
-      if (observer) {
-        observer.observe(nodes[i])
-        continue
-      }
-
-      this.load(nodes[i])
-      this.markAsLoaded(nodes[i])
-      this.loaded(nodes[i])
-    }
-
     this.observer = observer
   }
 
   mixin(Lazy, {
+
+    /**
+     * observe the elements
+     *
+     * @param {Element|NodeList|string} el
+     */
+    observe: function (el) {
+      var nodes = getElementList(el)
+      for(var i = 0; i < nodes.length; i++ ) {
+        if (this.isLoaded(nodes[i])) {
+          continue
+        }
+
+        if (this.observer) {
+          this.observer.observe(nodes[i])
+          continue
+        }
+
+        this.load(nodes[i])
+        this.markAsLoaded(nodes[i])
+        this.loaded(nodes[i])
+      }
+    },
 
     /**
      * @param {IntersectionObserverEntry[]} entries
