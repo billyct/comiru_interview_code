@@ -22,6 +22,11 @@ body {
   position: static;
 }
 
+.ac__input__clear {
+  right: 65px;
+  top: 10px;
+}
+
 .ac__container--show-menu {
   border-radius: var(--border-radius--search) 0 0 0;
   border-bottom: none;
