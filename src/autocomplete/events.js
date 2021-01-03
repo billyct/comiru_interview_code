@@ -1,6 +1,7 @@
 module.exports = {
   onChange: 'ac.onChange',
   onInput: 'ac.onInput',
+  onInputClear: 'ac.onInputClear',
   onSelected: 'ac.onSelected',
   onUnselected: 'ac.onUnselected',
   onHoverPrev: 'ac.onHoverPrev',

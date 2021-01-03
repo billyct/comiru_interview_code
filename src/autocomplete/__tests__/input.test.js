@@ -219,4 +219,51 @@ describe('test Input handleSelected method', () => {
   })
 })
 
+describe('test Input handleInputClear method', () => {
+  it('should call handleInputClear method', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(Input.prototype, 'handleInputClear').mockImplementation(mockCallback)
+    const input = new Input()
+
+    input.trigger(events.onInputClear)
+
+    expect(mockCallback).toBeCalledTimes(1)
+
+    spy.mockRestore()
+  })
+
+  it('should clear input value', () => {
+    const input = new Input()
+    input.node.value = 'whatever'
+
+    input.trigger(events.onInputClear)
+
+    expect(input.node.value).toBe('')
+  })
+
+  it('should call handleInput method', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(Input.prototype, 'handleInput').mockImplementation(mockCallback)
+
+    const input = new Input()
+
+    input.trigger(events.onInputClear)
+
+    expect(mockCallback).toBeCalledTimes(1)
+
+    spy.mockRestore()
+  })
+
+  it('should focus the input node', () => {
+    const input = new Input()
+    document.body.appendChild(input.root)
+
+    input.trigger(events.onInputClear)
+
+    expect(input.node).toHaveFocus()
+
+    document.body.innerHTML = ''
+  })
+})
+
 /* jshint ignore:end */

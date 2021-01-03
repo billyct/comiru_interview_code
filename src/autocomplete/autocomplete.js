@@ -2,6 +2,7 @@ var utils = require('../common/utils')
 var html = require('../common/html')
 var ItemFunc = require('./item')
 var InputFunc = require('./input')
+var InputClearFunc = require('./inputClear')
 var MenuFunc = require('./menu')
 var events = require('./events')
 var classes = require('./classes')
@@ -25,6 +26,7 @@ function AutoCompleteFunc(Component) {
   }
 
   var Input = InputFunc.apply(this, arguments)
+  var InputClear = InputClearFunc.apply(this, arguments)
   var Menu = MenuFunc.apply(this, arguments)
   var Item = ItemFunc.apply(this, arguments)
 
@@ -46,6 +48,7 @@ function AutoCompleteFunc(Component) {
 
     if (this.opts.single) {
       this.value = ''
+      root.appendChild(new InputClear().root)
     } else {
       this.value = []
       root.prepend(new Item().root)

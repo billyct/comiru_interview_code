@@ -33,6 +33,7 @@ function InputFunc(Component) {
 
     this.on(events.onFocus, this.handleFocus.bind(this))
     this.on(events.onSelected, this.handleSelected.bind(this))
+    this.on(events.onInputClear, this.handleInputClear.bind(this))
   }
 
   mixin(Input, Component, {
@@ -91,6 +92,15 @@ function InputFunc(Component) {
         this.node.value = e.detail.value
         this.handleInput()
       }
+    },
+
+    /**
+     * handle onInputClear event
+     */
+    handleInputClear: function () {
+      this.node.value = ''
+      this.handleInput()
+      this.node.focus()
     }
   })
 
