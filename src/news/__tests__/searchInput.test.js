@@ -1,14 +1,18 @@
 /* jshint ignore:start */
 require('@testing-library/jest-dom/extend-expect')
-const {fireEvent} = require('@testing-library/dom')
 
 const ComponentFunc = require('../../common/component')
 const acEvents = require('../../autocomplete/events')
 const SearchInputFunc = require('../searchInput')
 const classes = require('../classes')
 const events = require('../events')
+const storage = require('../storage')
+
+jest.mock('../storage')
 
 let SearchInput
+
+const storageKey = 'news.ac.options'
 
 beforeEach(() => {
   SearchInput = SearchInputFunc(ComponentFunc())
@@ -30,6 +34,23 @@ describe(`test SearchInput Component's constructor`, () => {
     const ipt = new SearchInput()
     expect(ipt.root).toBeInstanceOf(Element)
     expect(typeof ipt.ac).toBe('object')
+  })
+
+  it('should set options from storage.get', () => {
+    // to fix `SearchInput = SearchInputFunc(ComponentFunc())` has be called from beforeEach block
+    storage.get.mockReset()
+
+    const options = ['a', 'b', 'c']
+    storage.get.mockReturnValue(options)
+    // should redefined SearchInput after mock get
+    SearchInput = SearchInputFunc(ComponentFunc())
+    const ipt = new SearchInput()
+
+    expect(storage.get).toBeCalledTimes(1)
+    expect(storage.get).toBeCalledWith(storageKey)
+    expect(ipt.ac.opts.options).toEqual(options)
+
+    storage.get.mockReset()
   })
 })
 
@@ -128,6 +149,29 @@ describe(`test SearchInput Component's handleSearchInput method`, () => {
 
     expect(mockCallback).toBeCalledTimes(1)
     expect(mockCallback.mock.calls[0][0].detail.value).toBe(valueChanged)
+  })
+
+  it(`should call storage.set correct`, () => {
+    const ipt = new SearchInput()
+
+    // first time call
+    ipt.root.querySelector('input').value = 'a'
+    ipt.trigger(events.onSearchInput)
+    expect(storage.set).toBeCalledWith(storageKey, ['a'])
+
+    // second time call
+    ipt.trigger(events.onSearchInput)
+    expect(storage.set).toBeCalledWith(storageKey, ['a'])
+
+    // third time call
+    ipt.root.querySelector('input').value = 'b'
+    ipt.trigger(events.onSearchInput)
+    expect(storage.set).toBeCalledWith(storageKey, ['a', 'b'])
+
+    // fourth time call
+    ipt.root.querySelector('input').value = ''
+    ipt.trigger(events.onSearchInput)
+    expect(storage.set).toBeCalledWith(storageKey, ['a', 'b'])
   })
 })
 
