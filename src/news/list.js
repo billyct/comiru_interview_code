@@ -12,6 +12,7 @@ function ListFunc(Component) {
   function List() {
     this.root = document.querySelector('#news-list')
     this.template = document.querySelector('#template-news-item').innerHTML
+    this.templateEmpty = document.querySelector('#template-empty').innerHTML
     this.lazy = new Lazy()
 
     this.on(events.onRefreshList, this.handleRefreshList.bind(this))
@@ -46,6 +47,15 @@ function ListFunc(Component) {
     },
 
     /**
+     * render empty html
+     *
+     * @private
+     */
+    _renderEmpty: function () {
+      this.root.innerHTML = this.templateEmpty
+    },
+
+    /**
      * @param {CustomEvent} e
      */
     handleRefreshList: function (e) {
@@ -56,6 +66,12 @@ function ListFunc(Component) {
 
       // delete the list content
       this.root.innerHTML = ''
+
+      if (e.detail.value.length <= 0){
+        this._renderEmpty()
+        return
+      }
+
       // append the data
       this._appendList(e.detail.value)
     },
