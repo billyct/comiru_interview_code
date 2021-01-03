@@ -25,6 +25,9 @@ function initMockHTML() {
   <script id="template-news-item" type="text/template">
     <div>{{v}}</div>
   </script>
+  <script id="template-empty" type="text/template">
+    <div>empty</div>
+  </script>
   `
 }
 
