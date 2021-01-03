@@ -22,6 +22,9 @@ function initMockHTML() {
   <script id="template-news-item" type="text/template">
     <div>{{v}}</div>
   </script>
+  <script id="template-empty" type="text/template">
+    <div>empty</div>
+  </script>
   `
 }
 
@@ -30,7 +33,8 @@ describe(`test List Component's constructor`, () => {
     const list = new List()
 
     expect(list.root).toBeInstanceOf(Element)
-    expect(typeof list.template).toBe('string')
+    expect(list.template.trim()).toBe('<div>{{v}}</div>')
+    expect(list.templateEmpty.trim()).toBe('<div>empty</div>')
     expect(typeof list.lazy).toBe('object')
   })
 })
@@ -62,10 +66,22 @@ describe(`test List Component's handleRefreshList method`, () => {
     expect(mockCallback).toBeCalledTimes(1)
   })
 
-  it('should set the root node to be empty', () => {
+  it('should call _renderEmpty method', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(List.prototype, '_renderEmpty').mockImplementation(mockCallback)
+
     const list = new List()
     list.trigger(events.onRefreshList, [])
-    expect(list.root).toBeEmptyDOMElement()
+
+    expect(mockCallback).toBeCalledTimes(1)
+
+    spy.mockRestore()
+  })
+
+  it('should set empty template', () => {
+    const list = new List()
+    list.trigger(events.onRefreshList, [])
+    expect(list.root).toContainHTML('<div>empty</div>')
   })
 
   it('should call _appendList method', () => {
