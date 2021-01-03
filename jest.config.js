@@ -2,6 +2,7 @@ module.exports = {
   setupFiles: [
     './mockEventTarget.js',
     './jestHelpers.js',
+    './mockLocalStorage.js',
   ],
 
   moduleNameMapper: {
