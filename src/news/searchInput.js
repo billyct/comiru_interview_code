@@ -17,6 +17,9 @@ function SearchInputFunc(Component) {
   var AutoComplete = AutoCompleteFunc(Component, {
     options: storage.get(key) || [],
     single: true,
+    onRemoveMenuItem: function () {
+      // Silence is gold
+    }
   })
 
   function SearchInput() {
@@ -29,6 +32,7 @@ function SearchInputFunc(Component) {
     this.on(acEvents.onChange, this.handleChange.bind(this))
     // @warning onPressEnter event may be will trigger onChange
     this.on(acEvents.onPressEnter, this.handleSearchInput.bind(this))
+    this.on(acEvents.onRemoveMenuItem, this.handleRemoveMenuItem.bind(this))
     this.on(events.onSearchInput, this.handleSearchInput.bind(this))
   }
 
@@ -74,6 +78,22 @@ function SearchInputFunc(Component) {
       storage.set(key, this.ac.opts.options.filter(function (v) {
         return v
       }))
+    },
+
+    /**
+     * handle onRemoveMenuItem event
+     *
+     * @param {CustomEvent} e
+     */
+    handleRemoveMenuItem: function (e) {
+      var value = e.detail.value
+      // filter options
+      this.ac.opts.options = this.ac.opts.options.filter(function (v) {
+        return v !== value
+      })
+
+      // refresh the options in the localstorage
+      storage.set(key, this.ac.opts.options)
     },
   })
 

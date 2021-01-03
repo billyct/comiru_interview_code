@@ -175,4 +175,29 @@ describe(`test SearchInput Component's handleSearchInput method`, () => {
   })
 })
 
+describe(`test SearchInput Component's handleRemoveMenuItem method`, () => {
+  it('should call handleRemoveMenuItem method', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(SearchInput.prototype, 'handleRemoveMenuItem').mockImplementation(mockCallback)
+
+    const ipt = new SearchInput()
+    ipt.trigger(acEvents.onRemoveMenuItem)
+
+    expect(mockCallback).toBeCalledTimes(1)
+
+    spy.mockRestore()
+  })
+
+  it('should have correct ac.opts.options', () => {
+    const ipt = new SearchInput()
+    ipt.ac.opts.options = [
+      'a', 'b', 'c',
+    ]
+    ipt.trigger(acEvents.onRemoveMenuItem, 'a')
+
+    expect(ipt.ac.opts.options).toEqual(['b', 'c'])
+    expect(storage.set).toBeCalledWith(storageKey, ipt.ac.opts.options)
+  })
+})
+
 
