@@ -12,6 +12,8 @@ function InputClearFunc(Component) {
     this.root = createElement('button', classes.inputClear)
 
     this.root.addEventListener('click', this.handleClick.bind(this))
+
+    this.on(events.onInput, this.handleInput.bind(this))
   }
 
   mixin(InputClear, Component, {
@@ -22,6 +24,19 @@ function InputClearFunc(Component) {
     handleClick: function (e) {
       e.stopPropagation()
       this.trigger(events.onInputClear)
+    },
+
+    /**
+     *
+     * @param {CustomEvent} e
+     */
+    handleInput: function (e) {
+      if (e.detail.value) {
+        this.root.style.display = 'block'
+        return
+      }
+
+      this.root.style.display = 'none'
     }
   })
 

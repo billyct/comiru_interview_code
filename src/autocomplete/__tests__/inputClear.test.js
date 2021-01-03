@@ -44,7 +44,32 @@ describe(`test InputClear Component's handleClick method`, () => {
 
     expect(mockCallback).toBeCalledTimes(1)
   })
+})
 
+describe(`test InputClear Component's handleInput method`, () => {
+  it(`should call handleInput method`, () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(InputClear.prototype, 'handleInput').mockImplementation(mockCallback)
+
+    const input = new InputClear()
+    input.trigger(events.onInput)
+
+    expect(mockCallback).toBeCalledTimes(1)
+
+    spy.mockRestore()
+  })
+
+  it(`should set root.style.display = 'block'`, () => {
+    const input = new InputClear()
+    input.trigger(events.onInput, 'whatever')
+    expect(input.root).toHaveStyle('display:block;')
+  })
+
+  it(`should set root.style.display = 'none'`, () => {
+    const input = new InputClear()
+    input.trigger(events.onInput, '')
+    expect(input.root).toHaveStyle('display:none;')
+  })
 })
 
 

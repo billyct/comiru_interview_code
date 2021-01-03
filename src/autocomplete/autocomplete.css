@@ -78,6 +78,7 @@
   right: 5px;
   top: 5px;
   outline: none;
+  display: none;
 }
 
 .ac__menu {
