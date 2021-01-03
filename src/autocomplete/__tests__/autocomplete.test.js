@@ -34,10 +34,7 @@ it('should render correct', () => {
 
 describe(`test AutoComplete Component's opt events`, () => {
   it('should trigger events defined', () => {
-    const keyDefined = (es => {
-      const keys = Object.keys(es);
-      return keys[ keys.length * Math.random() << 0]
-    })(events)
+    const keyDefined = randomElement(Object.keys(events))
 
     const mockCallback = jest.fn()
     AutoComplete = AutoCompleteFunc(ComponentFunc(), {
@@ -46,7 +43,13 @@ describe(`test AutoComplete Component's opt events`, () => {
     })
 
     const ac = new AutoComplete()
-    ac.trigger(events[keyDefined], 'whatever')
+    if (keyDefined === 'onRefreshMenu') {
+      ac.trigger(events[keyDefined], {
+        opts: [],
+      })
+    } else {
+      ac.trigger(events[keyDefined], 'whatever')
+    }
 
     expect(mockCallback).toBeCalledTimes(1)
   })
