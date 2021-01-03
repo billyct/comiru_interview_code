@@ -15,6 +15,6 @@ it support search history store in localstorage
 
 it requires lots html code.
 
-see [example/news.html](../example/news.html) for more detail.
+see [example/news.html](../../example/news.html) for more detail.
 
 
