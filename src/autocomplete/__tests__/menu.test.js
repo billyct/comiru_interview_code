@@ -317,6 +317,45 @@ describe(`test Menu Component's handleClick method`, () => {
     spy.mockRestore()
   })
 
+  it('should remove the node', () => {
+    Menu = MenuFunc(ComponentFunc(), {
+      onRemoveMenuItem: jest.fn(),
+    })
+
+    const menu = new Menu()
+    menu.trigger(events.onRefreshMenu, {
+      opts: [
+        'a', 'b', 'c',
+      ]
+    })
+
+    const aNode = menu.root.firstElementChild
+    fireEvent.click(aNode.querySelector('.' + classes.menuItemRemove))
+
+    expect(menu.root).not.toContainElement(aNode)
+  })
+
+  it('should trigger onRemoveMenuItem event', () => {
+    Menu = MenuFunc(ComponentFunc(), {
+      onRemoveMenuItem: jest.fn(),
+    })
+
+    const menu = new Menu()
+    const mockCallback = jest.fn()
+    menu.on(events.onRemoveMenuItem, mockCallback)
+    menu.trigger(events.onRefreshMenu, {
+      opts: [
+        'a', 'b', 'c',
+      ]
+    })
+
+    const aNode = menu.root.firstElementChild
+    fireEvent.click(aNode.querySelector('.' + classes.menuItemRemove))
+
+    expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback.mock.calls[0][0].detail.value).toBe('a')
+  })
+
   it('should trigger onUnselected event', () => {
     const menu = new Menu()
     menu.trigger(events.onRefreshMenu, {
@@ -330,7 +369,12 @@ describe(`test Menu Component's handleClick method`, () => {
 
     menu.root.firstElementChild.classList.add(classes.menuItemSelected)
 
-    fireEvent.click(menu.root.firstElementChild)
+    const target = randomElement([
+      menu.root.firstElementChild,
+      menu.root.firstElementChild.firstElementChild,
+    ])
+
+    fireEvent.click(target)
 
     expect(mockCallback).toBeCalledTimes(1)
     expect(mockCallback.mock.calls[0][0].detail.value).toBe('a')
@@ -349,7 +393,12 @@ describe(`test Menu Component's handleClick method`, () => {
     const mockCallback = jest.fn()
     menu.on(events.onSelected, mockCallback)
 
-    fireEvent.click(menu.root.firstElementChild)
+    const target = randomElement([
+      menu.root.firstElementChild,
+      menu.root.firstElementChild.firstElementChild,
+    ])
+
+    fireEvent.click(target)
 
     expect(mockCallback).toBeCalledTimes(1)
     expect(mockCallback.mock.calls[0][0].detail.value).toBe('a')
@@ -397,9 +446,9 @@ describe(`test Menu Component's handleRefreshMenu method`, () => {
       ]
     })
 
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">a</div>`)
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">b</div>`)
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">c</div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><span class="${classes.menuItemText}">a</span></div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><span class="${classes.menuItemText}">b</span></div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><span class="${classes.menuItemText}">c</span></div>`)
   })
 
   it('should render with opts and selectedValue', () => {
@@ -413,9 +462,9 @@ describe(`test Menu Component's handleRefreshMenu method`, () => {
       ]
     })
 
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem} ${classes.menuItemSelected}">a</div>`)
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">b</div>`)
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">c</div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem} ${classes.menuItemSelected}"><span class="${classes.menuItemText}">a</span></div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><span class="${classes.menuItemText}">b</span></div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><span class="${classes.menuItemText}">c</span></div>`)
   })
 
   it('should render with opts, selectedValue and inputValue', () => {
@@ -430,9 +479,27 @@ describe(`test Menu Component's handleRefreshMenu method`, () => {
       inputValue: 'b'
     })
 
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem} ${classes.menuItemSelected}">a<strong>b</strong></div>`)
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><strong>b</strong>c</div>`)
-    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">c<strong>b</strong></div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem} ${classes.menuItemSelected}"><span class="${classes.menuItemText}">a<strong>b</strong></span></div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><span class="${classes.menuItemText}"><strong>b</strong>c</span></div>`)
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}"><span class="${classes.menuItemText}">c<strong>b</strong></span></div>`)
+  })
+
+  it('should render with remove button', () => {
+    Menu = MenuFunc(ComponentFunc(), {
+      onRemoveMenuItem(e) {},
+    })
+    const menu = new Menu()
+    menu.trigger(events.onRefreshMenu, {
+      opts: [
+        'a', 'b', 'c'
+      ],
+    })
+
+    expect(menu.root).toContainHTML(`<div class="${classes.menuItem}">`)
+    expect(menu.root).toContainHTML(`<span class="${classes.menuItemText}">a</span>`)
+    expect(menu.root).toContainHTML(`<span class="${classes.menuItemText}">b</span>`)
+    expect(menu.root).toContainHTML(`<span class="${classes.menuItemText}">c</span>`)
+    expect(menu.root).toContainHTML(`<button class="${classes.menuItemRemove}">`)
   })
 
   it('should trigger onHideMenu event when opts is empty', () => {

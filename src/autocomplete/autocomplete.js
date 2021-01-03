@@ -18,7 +18,7 @@ function AutoCompleteFunc(Component) {
   }
 
   // bind events with new instance
-  for(var e in opts){
+  for (var e in opts) {
     if (/^on/.test(e) && events[e]) {
       var c = new Component()
       c.on(events[e], opts[e].bind(c))
@@ -57,6 +57,7 @@ function AutoCompleteFunc(Component) {
     this.on(events.onSelected, this.handleSelected.bind(this))
     this.on(events.onUnselected, this.handleUnselected.bind(this))
     this.on(events.onInput, this.handleInput.bind(this))
+    this.on(events.onRemoveMenuItem, this.handleRemoveMenuItem.bind(this))
   }
 
   mixin(
@@ -140,6 +141,17 @@ function AutoCompleteFunc(Component) {
         })
 
         this.trigger(events.onChange, this.value)
+      },
+
+      /**
+       * remove the option matched the value
+       *
+       * @param {CustomEvent} e
+       */
+      handleRemoveMenuItem: function (e) {
+        this.opts.options = this.opts.options.filter(function (value) {
+          return value !== e.detail.value
+        })
       },
     })
 

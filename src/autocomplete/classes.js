@@ -12,4 +12,6 @@ module.exports = {
   menuItem: 'ac__menu__item',
   menuItemSelected: 'ac__menu__item--selected',
   menuItemHover: 'ac__menu__item--hover',
+  menuItemText: 'ac__menu__item__text',
+  menuItemRemove: 'ac__menu__item__remove',
 }

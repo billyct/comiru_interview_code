@@ -12,4 +12,5 @@ module.exports = {
   onRefreshMenu: 'ac.onRefreshMenu',
   onHideMenu: 'ac.onHideMenu',
   onShowMenu: 'ac.onShowMenu',
+  onRemoveMenuItem: 'ac.onRemoveMenuItem',
 }

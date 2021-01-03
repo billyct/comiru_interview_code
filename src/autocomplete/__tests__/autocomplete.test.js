@@ -309,7 +309,31 @@ describe('test AutoComplete Component when single = true', () => {
       inputValue: inputValue,
     })
   })
+})
 
+describe(`test AutoComplete Component's handleRemoveMenuItem method`, () => {
+  it('should call handleRemoveMenuItem method', () => {
+    const mockCallback = jest.fn()
+    const spy = jest.spyOn(AutoComplete.prototype, 'handleRemoveMenuItem').mockImplementation(mockCallback)
+
+    const ac = new AutoComplete()
+
+    ac.trigger(events.onRemoveMenuItem)
+
+    expect(mockCallback).toBeCalledTimes(1)
+
+    spy.mockRestore()
+  })
+
+  it('should filter options', () => {
+    const ac = new AutoComplete()
+    ac.opts.options = [
+      'a', 'b', 'c'
+    ]
+    ac.trigger(events.onRemoveMenuItem, 'a')
+
+    expect(ac.opts.options).toEqual(['b', 'c'])
+  })
 })
 
 

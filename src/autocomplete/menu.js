@@ -171,9 +171,26 @@ function MenuFunc(Component) {
     handleClick: function (e) {
       // prevent trigger onFocus event
       e.stopPropagation()
-
       var target = e.target
-      var text = target.textContent
+      var text
+
+      // remove
+      if (target.classList.contains(classes.menuItemRemove)) {
+        var node = target.closest('.' + classes.menuItem)
+        text = node.textContent
+        // remove
+        node.remove()
+        this.trigger(events.onRemoveMenuItem, text)
+        return
+      }
+
+      // reset the target to menuItem
+      if (target.classList.contains(classes.menuItemText)) {
+        target = target.closest('.' + classes.menuItem)
+      }
+
+      text = target.textContent
+
       // is menu item
       if (target.classList.contains(classes.menuItem)) {
         // if the menu item is selected,then unselect it
@@ -202,7 +219,15 @@ function MenuFunc(Component) {
       for (var i = 0; i < opts.length; i++) {
         var node = createElement('div', classes.menuItem)
 
-        node.innerHTML = highlight(opts[i], inputValue)
+        var text = createElement('span', classes.menuItemText)
+        text.innerHTML = highlight(opts[i], inputValue)
+        node.appendChild(text)
+
+        if (this.opts.onRemoveMenuItem) {
+          var remove = createElement('button', classes.menuItemRemove)
+          node.appendChild(remove)
+        }
+
         if (selectedOpts.indexOf(opts[i]) >= 0) {
           // @warning
           node.classList.add(classes.menuItemSelected)
