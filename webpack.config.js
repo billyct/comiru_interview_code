@@ -2,6 +2,7 @@ module.exports = {
   entry: {
     autocomplete: './src/autocomplete/index.js',
     lazy: './src/lazy/index.js',
+    news: './src/news/index.js',
   },
 
   watchOptions: {
@@ -9,7 +10,7 @@ module.exports = {
       'dist/**',
       'example/**',
       'node_modules/**',
-      'test/**',
+      'src/**/__test__/**',
     ]
   },
 

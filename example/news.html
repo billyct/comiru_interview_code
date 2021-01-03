@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>News</title>
+</head>
+<body>
+
+<div class="news__wrapper">
+    <div class="news__search">
+        <div class="news_search_container">
+            <div id="search-ipt" class="news__search__input"></div>
+            <button id="search-btn" class="news__search__button"></button>
+        </div>
+    </div>
+
+
+    <div id="news-list" class="news__list"></div>
+
+    <div class="news__next__container">
+        <button id="next-btn" class="news__next">
+            <span class="news__next__text">Next page</span>
+            <span class="news__next__icon"></span>
+        </button>
+    </div>
+</div>
+
+<script id="template-news-item" type="text/template">
+    <div class="news__item">
+        <div class="news__item__left">
+            <div class="news__author">
+                <img class="news__author__avatar" src="https://via.placeholder.com/20" data-src="{{avatar}}" alt=""/>
+                <span class="news__author__name">{{name}}</span>
+            </div>
+
+            <div class="news__content">
+                {{content}}
+            </div>
+
+            <div class="news__date">
+                {{date}}
+            </div>
+        </div>
+
+        <div class="news__item__right">
+            <img class="news__img" src="https://via.placeholder.com/100" data-src="{{image}}" alt=""/>
+        </div>
+    </div>
+</script>
+
+<script src="./faker.min.js"></script>
+<script src="../dist/news.js"></script>
+
+<script>
+  var fakeData = (function () {
+    var res = []
+    for (var i = 0; i < 10; i++) {
+      res.push({
+        avatar: 'https://picsum.photos/20/20?random=' + i,
+        name: faker.name.findName(),
+        content: faker.lorem.text(),
+        date: 'just now',
+        image: 'https://picsum.photos/100/100?random=' + i,
+      })
+    }
+
+    return res
+  })()
+
+  News({
+    data: fakeData,
+    options: [
+      'comiru',
+    ],
+  })
+</script>
+
+</body>
+</html>
