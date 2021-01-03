@@ -3,6 +3,7 @@ var acEvents = require('../autocomplete/events')
 var AutoCompleteFunc = require('../autocomplete/autocomplete')
 var events = require('./events')
 var classes = require('./classes')
+var storage = require('./storage')
 
 require('../autocomplete/autocomplete.css')
 
@@ -10,14 +11,11 @@ var mixin = utils.mixin
 
 function SearchInputFunc(Component) {
 
-  var opts = {}
-  if (arguments.length > 1) {
-    opts = arguments[1]
-  }
+  var key = 'news.ac.options'
 
   // use the same Component so that all the Components can listen to the same EventTarget
   var AutoComplete = AutoCompleteFunc(Component, {
-    options: opts.options,
+    options: storage.get(key) || [],
     single: true,
   })
 
@@ -65,7 +63,17 @@ function SearchInputFunc(Component) {
      */
     handleSearchInput: function () {
       var node = this.ac.root.querySelector('input')
-      this.trigger(events.onSearch, node.value)
+      var inputValue = node.value
+      this.trigger(events.onSearch, inputValue)
+
+      // add node.inputValue to localstorage, and reset the ac.opts.options
+      if (this.ac.opts.options.indexOf(inputValue) < 0) {
+        this.ac.opts.options.push(inputValue)
+      }
+
+      storage.set(key, this.ac.opts.options.filter(function (v) {
+        return v
+      }))
     },
   })
 
