@@ -43,8 +43,6 @@ var ComponentFunc = function () {
 
       // dispatch onChange event
       var event = new CustomEvent(eventType, data)
-      // stopPropagation()
-      event.cancelBubble = true
 
       this.listener.dispatchEvent(event)
     },
