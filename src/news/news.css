@@ -2,8 +2,10 @@
   --border-radius--search: 16px;
   --padding-x--search:16px;
   --size--image: 100px;
+  --size--image-avatar: 16px;
   --box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 1px 10px 0 rgba(0, 0, 0, 0.06);
   --max-width: 500px;
+  --background-color--image: #c0c0c0;
 }
 
 body {
@@ -125,9 +127,11 @@ body {
 }
 
 .news__author__avatar {
-  width: 16px;
-  height: 16px;
+  width: var(--size--image-avatar);
+  height: var(--size--image-avatar);
   margin-right: 8px;
+  background-color: var(--background-color--image);
+  color: var(--background-color--image);
 }
 
 .news__author__name {
@@ -145,6 +149,8 @@ body {
   width: var(--size--image);
   height: var(--size--image);
   border-radius: 10px;
+  background-color: var(--background-color--image);
+  color: var(--background-color--image);
 }
 
 .news__date {
