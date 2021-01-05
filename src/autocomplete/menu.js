@@ -1,8 +1,8 @@
 var utils = require('../common/utils')
 var html = require('../common/html')
+var highlight = require('../common/highlight')
 var events = require('./events')
 var classes = require('./classes')
-var highlight = require('./highlight')
 
 var mixin = utils.mixin
 var createElement = html.createElement
