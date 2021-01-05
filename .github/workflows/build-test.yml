@@ -1,11 +1,11 @@
 name: build-test
 on:
-  - push:
-      paths:
-        - '**.js'
-  - pull_request:
-      paths:
-        - '**.js'
+  push:
+    paths:
+      - '**.js'
+  pull_request:
+    paths:
+      - '**.js'
 jobs:
   test:
     name: Node.js ${{ matrix.node-version }}
