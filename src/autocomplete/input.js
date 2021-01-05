@@ -44,9 +44,7 @@ function InputFunc(Component) {
     handleFocus: function () {
       this.node.focus()
 
-      if (this.node.value !== '') {
-        this.trigger(events.onInput, this.node.value)
-      }
+      this.trigger(events.onInput, this.node.value)
     },
 
     /**

@@ -90,7 +90,7 @@ function AutoCompleteFunc(Component) {
       handleInput: function (e) {
         var v = e.detail.value
 
-        var opts = []
+        var opts = this.opts.options
 
         if (v !== '') {
           opts = this.opts.options.filter(function (value) {
@@ -101,7 +101,7 @@ function AutoCompleteFunc(Component) {
         if (this.opts.single) {
           this.trigger(events.onRefreshMenu, {
             opts: opts,
-            inputValue: e.detail.value,
+            inputValue: v,
           })
 
           return
@@ -110,7 +110,7 @@ function AutoCompleteFunc(Component) {
         this.trigger(events.onRefreshMenu, {
           opts: opts,
           selectedOpts: this.value,
-          inputValue: e.detail.value,
+          inputValue: v,
         })
       },
 

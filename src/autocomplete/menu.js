@@ -200,6 +200,8 @@ function MenuFunc(Component) {
           // select the item
           this.trigger(events.onSelected, text)
         }
+
+        this.trigger(events.onInputClear)
       }
     },
 
@@ -236,7 +238,7 @@ function MenuFunc(Component) {
         this.root.appendChild(node)
       }
 
-      if (this.root.innerHTML === '' || inputValue === '') {
+      if (this.root.innerHTML === '') {
         this.trigger(events.onHideMenu)
         return
       }

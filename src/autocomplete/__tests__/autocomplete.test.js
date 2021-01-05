@@ -110,16 +110,20 @@ describe(`test AutoComplete Component's handleDocumentClick method`, () => {
     expect(mockCallback).toBeCalledTimes(1)
   })
 
-  it('should not trigger onHideMenu event', () => {
-    const ac = new AutoComplete()
+  it('should not call handleDocumentClick method', () => {
     const mockCallback = jest.fn()
-    ac.on(events.onHideMenu, mockCallback)
+    const spy = jest.spyOn(AutoComplete.prototype, 'handleDocumentClick').mockImplementation(mockCallback)
+
+    const ac = new AutoComplete()
 
     document.body.appendChild(ac.root)
 
     fireEvent.click(ac.root.firstElementChild)
 
+    // it will prevent by handleClick method
     expect(mockCallback).not.toBeCalled()
+
+    spy.mockRestore()
   })
 })
 
@@ -163,6 +167,10 @@ describe(`test AutoComplete Component's handleInput method`, () => {
   })
 
   it('should trigger onRefreshMenu with empty input', function () {
+    const options = ['a', 'b', 'c']
+    AutoComplete = AutoCompleteFunc(ComponentFunc(), {
+      options,
+    })
     const ac = new AutoComplete()
     const mockCallback = jest.fn()
     ac.on(events.onRefreshMenu, mockCallback)
@@ -170,6 +178,7 @@ describe(`test AutoComplete Component's handleInput method`, () => {
     ac.trigger(events.onInput, '')
 
     expect(mockCallback).toBeCalledTimes(1)
+    expect(mockCallback.mock.calls[0][0].detail.value.opts).toEqual(options)
   })
 
   it('should trigger onRefreshMenu event', function () {

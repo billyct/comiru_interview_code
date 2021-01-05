@@ -515,11 +515,11 @@ describe(`test Menu Component's handleRefreshMenu method`, () => {
     expect(mockCallback).toBeCalledTimes(1)
   })
 
-  it('should trigger onHideMenu event when input value is empty', () => {
+  it('should trigger onShowMenu event when input value is empty', () => {
     const mockCallback = jest.fn()
 
     const menu = new Menu()
-    menu.on(events.onHideMenu, mockCallback)
+    menu.on(events.onShowMenu, mockCallback)
     menu.trigger(events.onRefreshMenu, {
       opts: [
         'a'

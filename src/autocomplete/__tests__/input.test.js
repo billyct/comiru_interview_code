@@ -21,7 +21,7 @@ it(`should render with the Input component's right html`, () => {
 })
 
 describe(`test Input Component's handleFocus method`, () => {
-  it('should call handleFocus when onFocus event triggered', () => {
+  it('should call handleFocus method', () => {
     const mockCallback = jest.fn()
     const spy = jest.spyOn(Input.prototype, 'handleFocus').mockImplementation(mockCallback)
     const input = new Input()
@@ -33,7 +33,7 @@ describe(`test Input Component's handleFocus method`, () => {
     spy.mockRestore()
   })
 
-  it('should focused when onFocus event triggered', () => {
+  it('should focus the input node', () => {
     const input = new Input()
     document.body.appendChild(input.root)
 
@@ -44,10 +44,12 @@ describe(`test Input Component's handleFocus method`, () => {
     document.body.innerHTML = ''
   })
 
-  it('should trigger onInput event when onFocus event triggered with the input value filled', () => {
+  it('should trigger onInput event', () => {
     const mockCallback = jest.fn()
 
-    const inputValue = 'test'
+    const inputValue = randomElement([
+      'filled', '',
+    ])
     const input = new Input()
     input.on(events.onInput, mockCallback)
     input.node.value = inputValue

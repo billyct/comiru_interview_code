@@ -21,8 +21,8 @@ it('should render correct', function () {
 it('should be independent with difference instances', function () {
   const node = document.createElement('div')
 
-  const ac1 = AutoComplete(node, {})
-  const ac2 = AutoComplete(node, {})
+  const ac1 = AutoComplete(node, {options: []})
+  const ac2 = AutoComplete(node, {options: []})
 
   const mockCallback = jest.fn()
 
