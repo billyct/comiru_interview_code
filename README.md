@@ -9,6 +9,16 @@ the code for comiru's interview
 * [JSHint](https://jshint.com/) for code quality
 * [Jest](https://jestjs.io/) for code test
 
+## Example
+
+see [example](./example) folder
+
+or visit direct:
+
+* [example/autocomplete.html](https://billyct-comiru-interview-code.netlify.app/example/autocomplete.html)
+* [example/lazy.html](https://billyct-comiru-interview-code.netlify.app/example/lazy.html)
+* [example/news.html](https://billyct-comiru-interview-code.netlify.app/example/news.html)
+
 ## Setup
 
 ```shell
@@ -24,7 +34,7 @@ yarn build
 yarn test
 ```
 
-### Run Example
+### Run Example Locally
 
 ```shell
 php -S localhost:8000
@@ -55,7 +65,7 @@ now you can visit
 └── dist // when you run `yarn build` it will appear
 ```
 
-## Link The Components
+## Link To The Components
 
 * [AutoComplete Component](./src/autocomplete)
 * [Lazy Component](./src/lazy)
