@@ -47,8 +47,6 @@ body {
 }
 
 .news__wrapper {
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
   padding-bottom: 32px;
   box-sizing: border-box;
@@ -192,6 +190,12 @@ body {
   display: inline-block;
   width: 20px;
   height: 20px;
+}
+
+@media (min-width: 500px) {
+  .news__list {
+    box-sizing: content-box;
+  }
 }
 
 
