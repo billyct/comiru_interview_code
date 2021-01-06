@@ -15,6 +15,14 @@ function DataFunc(Component) {
   function Data() {
     this.data = opts.data || []
 
+    this.data = this.data.map(function (datum) {
+      if (datum.content) {
+        datum.content = truncate(datum.content, 140)
+      }
+
+      return datum
+    })
+
     // init result data
     this.result = []
     this.resultPerPage = 5
@@ -60,13 +68,7 @@ function DataFunc(Component) {
      */
     search: function (text) {
 
-      var data = this.data.map(function (datum) {
-        if (datum.content) {
-          datum.content = truncate(datum.content, 150)
-        }
-
-        return datum
-      })
+      var data = this.data
 
       if (text) {
         data = data
@@ -74,6 +76,9 @@ function DataFunc(Component) {
             return datum.content.indexOf(text) >= 0 || datum.name.indexOf(text) >= 0
           })
           .map(function (datum) {
+
+            datum = JSON.parse(JSON.stringify(datum))
+
             if (datum.content) {
               datum.content = highlight(datum.content, text)
             }

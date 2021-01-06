@@ -108,4 +108,15 @@ describe(`test Data Component's search method`, () => {
 
     spy.mockRestore()
   })
+
+  it('should highlight once when search twice', () => {
+    const data = new Data()
+    data.data = [{name: 'a', content: 'a'}]
+
+    data.search('a')
+    data.search('a')
+
+    expect(data.data).toEqual([{name: 'a', content: 'a'}])
+    expect(data.result).toEqual([{name: '<strong>a</strong>', content: '<strong>a</strong>'}])
+  })
 })
