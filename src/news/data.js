@@ -1,4 +1,6 @@
 var utils = require('../common/utils')
+var truncate = require('../common/truncate')
+var highlight = require('../common/highlight')
 var events = require('./events')
 
 var mixin = utils.mixin
@@ -58,11 +60,30 @@ function DataFunc(Component) {
      */
     search: function (text) {
 
-      var data = this.data
+      var data = this.data.map(function (datum) {
+        if (datum.content) {
+          datum.content = truncate(datum.content, 150)
+        }
+
+        return datum
+      })
+
       if (text) {
-        data = data.filter(function (datum) {
-          return datum.content.indexOf(text) >= 0 || datum.name.indexOf(text) >= 0
-        })
+        data = data
+          .filter(function (datum) {
+            return datum.content.indexOf(text) >= 0 || datum.name.indexOf(text) >= 0
+          })
+          .map(function (datum) {
+            if (datum.content) {
+              datum.content = highlight(datum.content, text)
+            }
+
+            if (datum.name) {
+              datum.name = highlight(datum.name, text)
+            }
+
+            return datum
+          })
       }
 
       this.result = data

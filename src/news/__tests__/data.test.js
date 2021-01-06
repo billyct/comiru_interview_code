@@ -103,7 +103,7 @@ describe(`test Data Component's search method`, () => {
     data.search('whatever')
 
     expect(JSON.stringify(data.search('a'))).toStrictEqual(JSON.stringify(['a']))
-    expect(data.result).toEqual(dataFiltered)
+    expect(JSON.stringify(data.result)).toStrictEqual(JSON.stringify(dataFiltered))
     expect(data.resultPage).toBe(2)
 
     spy.mockRestore()
