@@ -423,6 +423,49 @@ describe(`test Menu Component's handleClick method`, () => {
 
     expect(mockCallback).not.toBeCalled()
   })
+
+  it('should not trigger onInputClear event', () => {
+    const menu = new Menu()
+    menu.opts.single = true
+    menu.trigger(events.onRefreshMenu, {
+      opts: [
+        'a', 'b', 'c',
+      ]
+    })
+
+    const mockCallback = jest.fn()
+    menu.on(events.onInputClear, mockCallback)
+
+    const target = randomElement([
+      menu.root.firstElementChild,
+      menu.root.firstElementChild.firstElementChild,
+    ])
+
+    fireEvent.click(target)
+
+    expect(mockCallback).not.toBeCalled()
+  })
+
+  it('should trigger onInputClear event', () => {
+    const menu = new Menu()
+    menu.trigger(events.onRefreshMenu, {
+      opts: [
+        'a', 'b', 'c',
+      ]
+    })
+
+    const mockCallback = jest.fn()
+    menu.on(events.onInputClear, mockCallback)
+
+    const target = randomElement([
+      menu.root.firstElementChild,
+      menu.root.firstElementChild.firstElementChild,
+    ])
+
+    fireEvent.click(target)
+
+    expect(mockCallback).toBeCalledTimes(1)
+  })
 })
 
 describe(`test Menu Component's handleRefreshMenu method`, () => {

@@ -201,7 +201,9 @@ function MenuFunc(Component) {
           this.trigger(events.onSelected, text)
         }
 
-        this.trigger(events.onInputClear)
+        if (!this.opts.single) {
+          this.trigger(events.onInputClear)
+        }
       }
     },
 
