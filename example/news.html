@@ -4,10 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>News</title>
+
+    <style>
+      .loading {
+        display: block;
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+
+      .loading:after {
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 6px solid dodgerblue;
+        border-color: dodgerblue transparent dodgerblue transparent;
+        animation: loading 1.2s linear infinite;
+      }
+
+      @keyframes loading {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
 </head>
 <body>
 
-<div class="news__wrapper">
+<div id="loading" class="loading"></div>
+
+<div class="news__wrapper" style="display: none">
     <div class="news__search">
         <div class="news__search__container">
             <div id="search-ipt" class="news__search__input"></div>
@@ -77,6 +114,12 @@
   News({
     data: fakeData,
   })
+
+  setTimeout(function () {
+    document.querySelector('#loading').remove()
+    document.querySelector('.news__wrapper').style.display = 'block'
+  }, 500)
+
 </script>
 
 </body>
