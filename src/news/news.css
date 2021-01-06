@@ -11,6 +11,9 @@
 body {
   margin: 0;
   font-size: 16px;
+  font-family: Segoe UI,avenir next,Hiragino Sans GB,PingFang SC,Helvetica Neue,WenQuanYi Micro Hei,Microsoft Yahei,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .ac__container {
@@ -103,6 +106,8 @@ body {
 .news__list {
   flex: 1;
   padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
   max-width: var(--max-width);
   margin: 0 auto;
 }
